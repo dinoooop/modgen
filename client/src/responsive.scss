@@ -1,0 +1,93 @@
+.menu {
+    display: none;
+}
+
+.close {
+    display: none;
+}
+
+@media screen and (min-width: 1400px) {
+
+    // above 1400px container need fixed width
+    .container {
+        width: 1320px;
+    }
+}
+
+@media screen and (max-width: 925px) {
+    .midbox {
+        .cardbody {
+            width: 60%;
+        }
+    }
+
+    .blankbox {
+        .cardbody {
+            width: 60%;
+        }
+    }
+
+    .analytics {
+        flex-grow: 1;
+    }
+
+    .modal {
+        .modal-content {
+            width: 80vw;
+        }
+    }
+}
+
+@media screen and (max-width: 768px) {
+
+    .col-1,
+    .col-2 {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+
+    }
+
+    .cardbody-50 {
+        width: 100%;
+    }
+
+    .show-desktop {
+        display: none;
+    }
+
+    .show-mobile {
+        display: block;
+    }
+
+
+    aside {
+        display: none;
+    }
+
+
+    .menu {
+        display: block;
+    }
+
+    .close {
+        display: block;
+    }
+
+
+}
+
+@media screen and (max-width: 576px) {
+
+   
+
+    .midbox {
+        .cardbody {
+            width: 90%;
+        }
+    }
+
+
+
+}
