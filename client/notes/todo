@@ -1,3 +1,7 @@
+- login, register, logout
 - index search 
->> sort index data 
-pagination 
+- sort data 
+- Project create, edit 
+- pagination 
+- grid
+cancel button

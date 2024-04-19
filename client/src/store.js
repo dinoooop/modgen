@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './auth/authSlice'
-import ProjectReducer from './project/projectSlice'
+import authReducer from './front/auth/authSlice'
+import ProjectReducer from './admin/project/projectSlice'
+import PostReducer from './admin/post/postSlice'
 
 export default configureStore({
   reducer: {
     auth: authReducer,
-    project:ProjectReducer
+    project:ProjectReducer,
+    post:PostReducer
   }
 })

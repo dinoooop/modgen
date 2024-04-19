@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import SideNav from '../components/SideNav';
-import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import ProfilePic from '../components/ProfilePic';
 
 export default function (props) {
@@ -9,9 +9,19 @@ export default function (props) {
     const theme = useSelector((state) => state.auth.theme);
     const [viewSidenav, setViewSideNav] = useState(false);
     const themeIcon = 'sample';
+    const authUser = useSelector(state => state.auth.user)
+    const navigate = useNavigate();
 
     const toggelTheme = () => {
     }
+
+    useEffect(() => {
+
+        if (!authUser) {
+            navigate('/login')
+        }
+
+    }, [])
 
     return (
         <div className={theme}>
@@ -23,8 +33,8 @@ export default function (props) {
                     <div className="logo-top">
                         <div className="logo">
                             <Link to="/">
-                                <img src="" alt="" />
-                                <div className='logo-text'>TIMLOG</div>
+                                <img src="/images/logo.png" alt="" />
+                                <div className='logo-text'>OS</div>
                             </Link>
                         </div>
                         <div className="close"><i className="fa-solid fa-close" onClick={() => setViewSideNav(!viewSidenav)}></i></div>
@@ -41,7 +51,6 @@ export default function (props) {
                         <ProfilePic />
                     </div>
                     <div className="content">
-                        
                         {props.children}
                     </div>
                 </main>

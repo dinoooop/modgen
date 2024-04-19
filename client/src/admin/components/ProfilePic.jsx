@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../front/auth/authSlice";
 
 export default function () {
 
@@ -19,18 +20,24 @@ export default function () {
         }
     }
 
-    const handleOnLogout = (e) => {
-        
+    const handleLogout = (e) => {
+        dispatch(logout())
+            .then(() => {
+                navigate('/login');
+            })
+            .catch((error) => {
+                console.error('Logout failed:', error);
+            });
     }
 
-    // window.__root = document.getElementById('main');
-    // window.__root.addEventListener('click', handleDocumentClick)
-    // window.profilePic = document.querySelector(".profile-pic");
+    window.__root = document.getElementById('root');
+    window.__root.addEventListener('click', handleDocumentClick)
+    window.profilePic = document.querySelector(".profile-pic");
 
     return (
         <div className="dropdown-item">
             <div onClick={onClickToggler}>
-                <img src="pic.png" className='profile-pic' />
+                <img src="/images/avatar.png" className='profile-pic' />
             </div>
             {
                 view &&
@@ -38,10 +45,11 @@ export default function () {
                     <div className="dropdown-arrow"></div>
                     <div className="list-button">
                         <Link to={'/profile/'}><i className="fa-solid fa-user"></i>Profile</Link>
-                        <a href="#" onClick={handleOnLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i>Logout</a>
+                        <div className="link" onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i>Logout</div>
                     </div>
                 </div>
             }
         </div>
     );
+    
 }

@@ -19,7 +19,7 @@ class ProjectFactory extends Factory
         return [
             'title' => fake()->company(),
             'content' => fake()->realText(320),
-            'keygen' => 'AS' . fake()->numberBetween(1000, 9999),
+            'yellow' => 'AS' . fake()->numberBetween(1000, 9999),
             'dir' => fake()->lastName()
         ];
     }

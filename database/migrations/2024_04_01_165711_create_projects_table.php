@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->text('content')->nullable();
-            $table->string('yellow');
+            $table->string('yellow'); // Yellow in the file replaced with red (given)
             $table->string('dir');
             $table->timestamps();
         });

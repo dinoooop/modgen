@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import config from '../config';
+import config from '../../config';
 
 const authUserFromStorage = localStorage.getItem('authUser') ? JSON.parse(localStorage.getItem('authUser')) : null
 const tokenFromStorage = localStorage.getItem('token') ? localStorage.getItem('token') : null
@@ -33,9 +33,9 @@ export const login = createAsyncThunk('auth/login', async (data) => {
 });
 
 
-export const logout = createAsyncThunk('auth/logout', async (data) => {
+export const logout = createAsyncThunk('auth/logout', async () => {
     try {
-        const response = await axios.post(`${config.api}/logout`, data, config.header());
+        const response = await axios.post(`${config.api}/logout`, null, config.header());
         return response.data;
     } catch (error) {
         throw new Error(error.response.data.message);

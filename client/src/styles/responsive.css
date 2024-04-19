@@ -5,37 +5,38 @@
 .close {
     display: none;
 }
+.md-60 {
+    width: 60%;
+}
 
 @media screen and (min-width: 1400px) {
-
-    // above 1400px container need fixed width
     .container {
         width: 1320px;
     }
+    
 }
 
 @media screen and (max-width: 925px) {
-    .midbox {
-        .cardbody {
-            width: 60%;
-        }
+    .midbox .cardbody {
+        width: 60%;
     }
 
-    .blankbox {
-        .cardbody {
-            width: 60%;
-        }
+    .blankbox .cardbody {
+        width: 60%;
     }
 
     .analytics {
         flex-grow: 1;
     }
 
-    .modal {
-        .modal-content {
-            width: 80vw;
-        }
+    .modal .modal-content {
+        width: 80vw;
     }
+
+    .md-60 {
+        width: 100%;
+    }
+    
 }
 
 @media screen and (max-width: 768px) {
@@ -46,7 +47,6 @@
         flex-direction: column;
         align-items: flex-start;
         gap: 0.5rem;
-
     }
 
     .cardbody-50 {
@@ -61,11 +61,9 @@
         display: block;
     }
 
-
     aside {
         display: none;
     }
-
 
     .menu {
         display: block;
@@ -75,19 +73,11 @@
         display: block;
     }
 
-
+    
 }
 
 @media screen and (max-width: 576px) {
-
-   
-
-    .midbox {
-        .cardbody {
-            width: 90%;
-        }
+    .midbox .cardbody {
+        width: 90%;
     }
-
-
-
 }

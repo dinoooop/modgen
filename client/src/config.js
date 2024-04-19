@@ -13,6 +13,16 @@ const config = {
     };
 
   },
+  formdataheader: () => {
+    const token = localStorage.getItem('token');
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+
+  },
 };
 
 export default config;

@@ -9,7 +9,10 @@ export const validateForm = (key, value) => {
             }
         case "description":
             return (value.length === 0) ? "Description required" : false
+            
+        default:
+            return false;
 
     }
-    return false
+
 }

@@ -12,10 +12,16 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $query = Project::query();
-        if (isset($request->search)) {
+        
+        if ($request->filled('search')) {
             $query->where('title', 'like', "%{$request->search}%");
         }
-        $data = $query->orderBy('created_at', 'desc')->get();
+
+        if ($request->filled('so')) {
+            $data = $query->orderBy($request->sb, $request->so)->paginate();
+        } else {
+            $data = $query->orderBy('id', 'desc')->paginate();
+        }
         return response()->json($data);
     }
 

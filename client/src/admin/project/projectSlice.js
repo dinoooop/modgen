@@ -1,18 +1,21 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
-import config from '../config';
+import config from '../../config';
 
 const initialState = {
     projects: [],
     project: {},
-    loading: false
+    loading: false,
+    // pagination
+    perPage: 0,
+    total: 0,
 };
 
 export const index = createAsyncThunk('project/index', async (data = {}) => {
     try {
         const response = await axios.get(`${config.api}/projects`, {
             params: data,
-            headers: config.header(),
+            headers: config.header().headers,
           });
         return response.data;
     } catch (error) {
@@ -38,7 +41,7 @@ export const destroy = createAsyncThunk('project/destroy', async (project) => {
     }
 });
 
-export const update = createAsyncThunk('project/updateProject', async (project) => {
+export const update = createAsyncThunk('project/update', async (project) => {
     try {
         const response = await axios.put(`${config.api}/projects/${project.id}`, project, config.header());
         return response.data;
@@ -47,9 +50,9 @@ export const update = createAsyncThunk('project/updateProject', async (project) 
     }
 });
 
-export const store = createAsyncThunk('project/store', async (project) => {
+export const store = createAsyncThunk('project/store', async (formData) => {
     try {
-        const response = await axios.post(`${config.api}/projects`, project, config.header());
+        const response = await axios.post(`${config.api}/projects`, formData, config.formdataheader());
         return response.data;
     } catch (error) {
         throw error;
@@ -70,7 +73,9 @@ export const projectSlice = createSlice({
                 state.loading = true;
             })
             .addCase(index.fulfilled, (state, action) => {
-                state.projects = action.payload;
+                state.projects = action.payload.data;
+                state.perPage = action.payload.per_page;
+                state.total = action.payload.total;
                 state.loading = false;
             })
             .addCase(index.rejected, (state, action) => {
@@ -86,6 +91,19 @@ export const projectSlice = createSlice({
                 state.loading = false;
             })
             .addCase(show.rejected, (state, action) => {
+                console.error('Error fetching project:', action.error);
+                state.loading = false;
+            })
+
+            // Store
+            .addCase(store.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(store.fulfilled, (state, action) => {
+                state.project = action.payload;
+                state.loading = false;
+            })
+            .addCase(store.rejected, (state, action) => {
                 console.error('Error fetching project:', action.error);
                 state.loading = false;
             });

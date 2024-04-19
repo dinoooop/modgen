@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux"
 import { login } from './authSlice'
 import { validateLoginForm } from './authValidation'
@@ -17,7 +17,7 @@ export default function () {
 
     useEffect(() => {
         if (authUser) {
-            navigate('/projects')
+            navigate('/admin/projects')
         }
     }, [authUser])
 
@@ -45,6 +45,7 @@ export default function () {
             <div className="midbox">
                 <div className='cardbody'>
                     <h1>Login</h1>
+                    <p className="my-1">Don't have an account? <Link to="/register">Sign Up</Link></p>
 
                     {
                         serverError &&
