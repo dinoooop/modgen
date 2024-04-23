@@ -67,4 +67,11 @@ class AuthController extends Controller
         // $user->roles()->attach($role);
         return response()->json($data);
     }
+    public function check(Request $request)
+    {
+
+    
+        $data['user'] = Auth::user();
+        return response()->json($data);
+    }
 }

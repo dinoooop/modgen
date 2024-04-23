@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { generate, show, update } from './projectSlice'
-import { validateForm } from './projectValidation'
+import { generate, show, update } from './moduleSlice'
+import { validateForm } from './moduleValidation'
 import DashboardLayout from '../layouts/DashboardLayout'
 import Validator from '../../helpers/validator'
 
@@ -60,7 +60,7 @@ export default function () {
                         
 
                         <button type='submit' className="btn submit">Generate</button>
-                        <Link to="/admin/projects" className="btn">Cancel</Link>
+                        <Link to="/admin/modules" className="btn">Cancel</Link>
 
                     </form>
                 </div>

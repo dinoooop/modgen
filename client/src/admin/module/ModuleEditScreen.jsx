@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { show, update } from './projectSlice'
-import { validateForm } from './projectValidation'
+import { show, update } from './moduleSlice'
+import { validateForm } from './moduleValidation'
 import DashboardLayout from '../layouts/DashboardLayout'
 import Validator from '../../helpers/validator'
 
@@ -14,8 +14,8 @@ export default function () {
     const fileInputRef = useRef(null)
     const validator = new Validator();
 
-    const stateFormData = useSelector(state => state.project)
-    const [formValues, setFormValues] = useState(stateFormData.project || {})
+    const stateFormData = useSelector(state => state.module)
+    const [formValues, setFormValues] = useState(stateFormData.module || {})
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
@@ -23,10 +23,10 @@ export default function () {
     }, [dispatch, params.id]);
 
     useEffect(() => {
-        if (stateFormData.project) {
-            setFormValues(stateFormData.project);
+        if (stateFormData.module) {
+            setFormValues(stateFormData.module);
         }
-    }, [stateFormData.project]);
+    }, [stateFormData.module]);
 
     const onChangeForm = (e) => {
         setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))
@@ -40,13 +40,14 @@ export default function () {
             setErrors(newFormData.errors)
         } else {
             dispatch(update(newFormData))
+            navigate('/admin/modules')
         }
     }
 
     return (
         <DashboardLayout>
             <div className="page-header">
-                <h1>Edit Project</h1>
+                <h1>Edit Module</h1>
             </div>
 
             <div className="row">
@@ -54,7 +55,7 @@ export default function () {
                     <form onSubmit={handleSubmit}>
 
                         <div className="form-group">
-                            <label htmlFor="title">Project Name</label>
+                            <label htmlFor="title">Module Name</label>
                             <input type="text"
                                 className="form-control input-field"
                                 id="title"
@@ -107,7 +108,7 @@ export default function () {
                         </div>
 
                         <button type='submit' className="btn submit">Submit</button>
-                        <Link to="/admin/projects" className="btn">Cancel</Link>
+                        <Link to="/admin/modules" className="btn">Cancel</Link>
 
                     </form>
                 </div>

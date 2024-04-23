@@ -2,7 +2,7 @@
 
 namespace App\Helpers;
 
-use App\Models\Project;
+use App\Models\Module;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
@@ -43,14 +43,13 @@ class ZipSave extends ZipSaveAce
             return $newDir;
         }
 
-
         return false;
 
     }
 
     public function replace($id, $red)
     {
-        $project = Project::find($id);
+        $project = Module::find($id);
         $modify = 'modify/' . Str::slug($red);
         
         $this->deleteDirIfExist($modify);

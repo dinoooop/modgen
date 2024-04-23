@@ -1,8 +1,9 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import SideNav from '../components/SideNav';
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import ProfilePic from '../components/ProfilePic';
+import { check } from '../../front/auth/authSlice';
 
 export default function (props) {
 
@@ -11,6 +12,8 @@ export default function (props) {
     const themeIcon = 'sample';
     const authUser = useSelector(state => state.auth.user)
     const navigate = useNavigate();
+    const dispatch = useDispatch()
+
 
     const toggelTheme = () => {
     }
@@ -20,8 +23,9 @@ export default function (props) {
         if (!authUser) {
             navigate('/login')
         }
-
-    }, [])
+        
+        dispatch(check())
+    }, [dispatch])
 
     return (
         <div className={theme}>

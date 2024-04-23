@@ -1,9 +1,9 @@
 <?php
 
+use App\Http\Controllers\ModuleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\ProjectController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +19,10 @@ use App\Http\Controllers\ProjectController;
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-
-
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/projects/{id}', [ProjectController::class, 'update']);
-    Route::resource('projects', ProjectController::class);
-    Route::post('/generate/{id}', [ProjectController::class, 'generate']);
+    Route::post('/modules/{id}', [ModuleController::class, 'update']);
+    Route::post('/generate/{id}', [ModuleController::class, 'generate']);
+    Route::resource('modules', ModuleController::class);
+    Route::get('/check', [AuthController::class, 'check']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });

@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ZipSave;
-use App\Models\Project;
+use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
-class ProjectController extends Controller
+class ModuleController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Project::query();
+        $query = Module::query();
 
         if ($request->filled('search')) {
             $query->where('title', 'like', "%{$request->search}%");
@@ -27,7 +27,7 @@ class ProjectController extends Controller
 
     public function show(Request $request, $id)
     {
-        $data = Project::findOrFail($id);
+        $data = Module::findOrFail($id);
         return response()->json($data);
     }
 
@@ -48,7 +48,7 @@ class ProjectController extends Controller
             $validated['dir'] = $zipSave->save($validated['title'], $fileName);
         }
 
-        $data = Project::create($validated);
+        $data = Module::create($validated);
         return response()->json($data);
     }
 
@@ -70,14 +70,14 @@ class ProjectController extends Controller
             $validated['dir'] = $zipSave->save($validated['title'], $fileName);
         }
 
-        $data = Project::findOrFail($id)->update($validated);
+        $data = Module::findOrFail($id)->update($validated);
         return response()->json($data);
 
     }
 
     public function destroy(Request $request, $id)
     {
-        $data = Project::findOrFail($id)->delete();
+        $data = Module::findOrFail($id)->delete();
         return response()->json($data);
     }
 

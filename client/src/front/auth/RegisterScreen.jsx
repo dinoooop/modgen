@@ -19,7 +19,7 @@ export default function () {
 
     useEffect(() => {
         if (authUser) {
-            navigate('/admin/projects')
+            navigate('/admin/modules')
         }
     }, [authUser])
 

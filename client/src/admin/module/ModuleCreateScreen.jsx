@@ -1,45 +1,47 @@
 import { useRef, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { store } from './projectSlice'
-import { validateForm } from './projectValidation'
-import validator from '../../helpers/validator'
+import { store } from './moduleSlice'
+import { validateForm } from './moduleValidation'
 import DashboardLayout from '../layouts/DashboardLayout'
+import Validator from '../../helpers/validator'
 
 export default function () {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const validator = new Validator()
     const fileInputRef = useRef(null)
 
-    const [formData, setFormData] = useState({
+    const [formValues, setFormValues] = useState({
         title: "",
-        content: "Hi",
-        yellow: "AS1022",
+        content: "",
+        yellow: "",
         zip: "",
-        filetype: []
     })
+
     const [errors, setErrors] = useState({})
 
     const onChangeForm = (e) => {
-        setFormData(prev => ({ ...prev, ...validator.validate(e, validateForm).formData }))
+        setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))
         setErrors(prev => ({ ...prev, ...validator.validate(e, validateForm).error }))
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const submit = validator.submit(formData, validateForm);
-        if (typeof submit.errors != 'undefined') {
-            setErrors(submit.errors)
+        const newFormData = validator.submitFile(formValues, validateForm)
+        if (typeof newFormData.errors != 'undefined') {
+            setErrors(newFormData.errors)
         } else {
-            dispatch(store(submit))
+            dispatch(store(newFormData))
+            navigate('/admin/modules')
         }
     }
 
     return (
         <DashboardLayout>
             <div className="page-header">
-                <h1>Create Project</h1>
+                <h1>Create Module</h1>
             </div>
 
             <div className="row">
@@ -47,11 +49,11 @@ export default function () {
                     <form onSubmit={handleSubmit}>
 
                         <div className="form-group">
-                            <label htmlFor="title">Project Name</label>
+                            <label htmlFor="title">Module Name</label>
                             <input type="text"
                                 className="form-control input-field"
                                 id="title"
-                                value={formData.title || ''}
+                                value={formValues.title || ''}
                                 name="title"
                                 onChange={onChangeForm}
                             />
@@ -63,7 +65,7 @@ export default function () {
                             <textarea
                                 className="form-control input-field"
                                 id="content"
-                                value={formData.content || ''}
+                                value={formValues.content || ''}
                                 name="content"
                                 onChange={onChangeForm}
                             />
@@ -75,7 +77,7 @@ export default function () {
                             <input type="text"
                                 className="form-control input-field"
                                 id="yellow"
-                                value={formData.yellow || ''}
+                                value={formValues.yellow || ''}
                                 name="yellow"
                                 onChange={onChangeForm}
                             />
@@ -94,12 +96,12 @@ export default function () {
                                 onChange={onChangeForm}
                                 placeholder="test"
                             />
-                            <div>{formData.zip.name || ''}</div>
+                            <div>{formValues.zip.name || ''}</div>
                             <div className="color-red">{errors.zip}</div>
                         </div>
 
                         <button type='submit' className="btn submit">Submit</button>
-                        <Link to="/admin/projects" className="btn">Cancel</Link>
+                        <Link to="/admin/modules" className="btn">Cancel</Link>
                     </form>
 
 

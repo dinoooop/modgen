@@ -14,6 +14,23 @@ const initialState = {
     loading: false
 };
 
+export const check = createAsyncThunk('auth/check', async (data = {}) => {
+    try {
+        const response = await axios.get(`${config.api}/check`, {
+            params: data,
+            headers: config.header().headers,
+        });
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.status === 401) {
+            localStorage.removeItem('authUser')
+            localStorage.removeItem('token')
+            window.location.href = '/login';
+        }
+        // throw new Error(error.response.data.message);
+    }
+});
+
 export const register = createAsyncThunk('auth/register', async (data) => {
     try {
         const response = await axios.post(`${config.api}/register`, data);

@@ -19,6 +19,16 @@ const config = {
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'multipart/form-data'
+      }
+    };
+
+  },
+  blobheader: () => {
+    const token = localStorage.getItem('token');
+    return {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'multipart/form-data'
       },
       responseType: 'blob'
     };

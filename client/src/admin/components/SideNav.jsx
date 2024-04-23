@@ -5,7 +5,7 @@ export default function () {
     return (
         <div className="nav" >
             <ul className="sidenav">
-                <SideNavButton title="Projects" icon="fa-solid fa-circle-check" href="/admin/projects" />
+                <SideNavButton title="Modules" icon="fa-solid fa-circle-check" href="/admin/modules" />
             </ul>
         </div >
     );
