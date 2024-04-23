@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { show, update } from './projectSlice'
 import { validateForm } from './projectValidation'
 import DashboardLayout from '../layouts/DashboardLayout'
+import Validator from '../../helpers/validator'
 
 export default function () {
 
@@ -11,9 +12,10 @@ export default function () {
     const navigate = useNavigate()
     const params = useParams()
     const fileInputRef = useRef(null)
+    const validator = new Validator();
 
     const stateFormData = useSelector(state => state.project)
-    const [formData, setFormData] = useState(stateFormData.project || {})
+    const [formValues, setFormValues] = useState(stateFormData.project || {})
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
@@ -22,28 +24,22 @@ export default function () {
 
     useEffect(() => {
         if (stateFormData.project) {
-            setFormData(stateFormData.project);
+            setFormValues(stateFormData.project);
         }
     }, [stateFormData.project]);
 
     const onChangeForm = (e) => {
-        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
-        const error = validateForm(e.target.name, e.target.value)
-        setErrors(prev => ({ ...prev, [e.target.name]: error }))
+        setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))
+        setErrors(prev => ({ ...prev, ...validator.validate(e, validateForm).error }))
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const updatedErrors = {}
-        Object.entries(formData).forEach(([key, value]) => {
-            updatedErrors[key] = validateForm(key, value)
-        })
-        setErrors(prev => ({ ...prev, ...updatedErrors }))
-        const allErrorsFalse = Object.values(updatedErrors).every(error => error === false)
-        if (allErrorsFalse) {
-            dispatch(update(formData)).then(() => {
-                navigate('/admin/projects')
-            })
+        const newFormData = validator.submitFile(formValues, validateForm)
+        if (typeof newFormData.errors != 'undefined') {
+            setErrors(newFormData.errors)
+        } else {
+            dispatch(update(newFormData))
         }
     }
 
@@ -62,7 +58,7 @@ export default function () {
                             <input type="text"
                                 className="form-control input-field"
                                 id="title"
-                                value={formData.title || ''}
+                                value={formValues.title || ''}
                                 name="title"
                                 onChange={onChangeForm}
                             />
@@ -74,7 +70,7 @@ export default function () {
                             <textarea
                                 className="form-control input-field"
                                 id="content"
-                                value={formData.content || ''}
+                                value={formValues.content || ''}
                                 name="content"
                                 onChange={onChangeForm}
                             />
@@ -86,7 +82,7 @@ export default function () {
                             <input type="text"
                                 className="form-control input-field"
                                 id="yellow"
-                                value={formData.yellow || ''}
+                                value={formValues.yellow || ''}
                                 name="yellow"
                                 onChange={onChangeForm}
                             />
@@ -106,7 +102,7 @@ export default function () {
                                 onChange={onChangeForm}
                                 placeholder="test"
                             />
-                            <div>{formData.dir && formData.dir || ''}</div>
+                            <div>{ formValues.dir || ''}</div>
                             <div className="color-red">{errors.zip}</div>
                         </div>
 

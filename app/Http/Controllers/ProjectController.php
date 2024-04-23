@@ -12,7 +12,7 @@ class ProjectController extends Controller
     public function index(Request $request)
     {
         $query = Project::query();
-        
+
         if ($request->filled('search')) {
             $query->where('title', 'like', "%{$request->search}%");
         }
@@ -54,11 +54,12 @@ class ProjectController extends Controller
 
     public function update(Request $request, $id)
     {
+
         $validated = $request->validate([
             'title' => 'sometimes|required|string',
             'content' => 'sometimes|required|string',
             'yellow' => 'sometimes|required|string',
-            'zip' => 'sometimes|required|mimes:zip',
+            'zip' => 'sometimes|mimes:zip',
         ]);
 
         if ($request->hasFile('zip') && $request->file('zip')->isValid()) {
@@ -71,6 +72,7 @@ class ProjectController extends Controller
 
         $data = Project::findOrFail($id)->update($validated);
         return response()->json($data);
+
     }
 
     public function destroy(Request $request, $id)

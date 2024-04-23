@@ -33,4 +33,11 @@ class ZipSaveAce
             Storage::makeDirectory($dir);
         }
     }
+    public function deleteDirIfExist($dir)
+    {
+        if (Storage::exists($dir)) {
+            Storage::deleteDirectory($dir);
+        }
+        
+    }
 }

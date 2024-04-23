@@ -21,6 +21,7 @@ class ZipSave extends ZipSaveAce
         $newDir = 'projects/' . Str::slug($title);
         $zipFile = Storage::path('uploads/' . $file);
 
+        $this->deleteDirIfExist($newDir);
         $this->createDirIfNotExist($newDir);
 
         $extractedPath = Storage::path($newDir);
@@ -51,7 +52,8 @@ class ZipSave extends ZipSaveAce
     {
         $project = Project::find($id);
         $modify = 'modify/' . Str::slug($red);
-
+        
+        $this->deleteDirIfExist($modify);
         $this->createDirIfNotExist($modify);
 
         $source = Storage::path($project->dir);
@@ -59,28 +61,28 @@ class ZipSave extends ZipSaveAce
         File::copyDirectory($source, $directory);
         $files = glob($directory . '/*');
 
-        $possibleKeys = array_combine(
-            $this->getPossibleKeys($project->yellow),
-            $this->getPossibleKeys($red),
-        );
+        $yellows = $this->getPossibleKeys($project->yellow);
+        $reds = $this->getPossibleKeys($red);
 
         foreach ($files as $file) {
             if (is_file($file)) {
-                foreach ($possibleKeys as $key => $value) {
+                foreach ($yellows as $key => $yellow) {
                     $contents = file_get_contents($file);
-                    $newContents = str_replace($key, $value, $contents);
+                    $newContents = str_replace($yellow, $reds[$key], $contents);
                     file_put_contents($file, $newContents);
                 }
             }
         }
 
         foreach ($files as $file) {
-            if (is_file($file)) {
-                foreach ($possibleKeys as $find => $replace) {
-                    $basename = basename($file);
-                    if (strpos($basename, $find) !== false) {
-                        $dirName = dirname($file);
-                        $newFIle = $dirName . '/' . str_replace($find, $replace, $basename);
+
+            $basename = basename($file);
+            foreach ($yellows as $key => $yellow) {
+                if (strpos($basename, $yellow) !== false) {
+                    $dirName = dirname($file);
+                    Log::info($file);
+                    $newFIle = $dirName . '/' . str_replace($yellow, $reds[$key], $basename);
+                    if (is_file($file) && file_exists($file)) {
                         rename($file, $newFIle);
                     }
                 }

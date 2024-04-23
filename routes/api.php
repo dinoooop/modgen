@@ -20,8 +20,10 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 
-Route::resource('projects', ProjectController::class);
-Route::post('/generate/{id}', [ProjectController::class, 'generate']);
+
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/projects/{id}', [ProjectController::class, 'update']);
+    Route::resource('projects', ProjectController::class);
+    Route::post('/generate/{id}', [ProjectController::class, 'generate']);
     Route::post('/logout', [AuthController::class, 'logout']);
 });

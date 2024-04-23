@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import config from '../../config';
+import download from 'downloadjs';
 
 const initialState = {
     projects: [],
@@ -16,7 +17,7 @@ export const index = createAsyncThunk('project/index', async (data = {}) => {
         const response = await axios.get(`${config.api}/projects`, {
             params: data,
             headers: config.header().headers,
-          });
+        });
         return response.data;
     } catch (error) {
         throw error;
@@ -41,19 +42,60 @@ export const destroy = createAsyncThunk('project/destroy', async (project) => {
     }
 });
 
-export const update = createAsyncThunk('project/update', async (project) => {
+export const update = createAsyncThunk('project/update', async (formData) => {
+
+
+    if (typeof formData.id === 'undefined') {
+        // a file upload // use POST
+
+        const id = formData.get('id');
+        try {
+            const response = await axios.post(`${config.api}/projects/${id}`, formData, config.formdataheader());
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+
+    } else {
+
+        // Normal data update using PUT
+        const id = formData.get('id');
+        try {
+            const response = await axios.put(`${config.api}/projects/${id}`, formData, config.header());
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+
+});
+
+
+
+
+
+export const store = createAsyncThunk('project/store', async (formData) => {
     try {
-        const response = await axios.put(`${config.api}/projects/${project.id}`, project, config.header());
+        const response = await axios.post(`${config.api}/projects`, formData, config.formdataheader());
         return response.data;
     } catch (error) {
         throw error;
     }
 });
 
-export const store = createAsyncThunk('project/store', async (formData) => {
+export const generate = createAsyncThunk('project/generate', async (data) => {
     try {
-        const response = await axios.post(`${config.api}/projects`, formData, config.formdataheader());
-        return response.data;
+        const response = await axios.post(`${config.api}/generate/${data.id}`, data, config.formdataheader())
+        if (response.data instanceof Blob) {
+            const fileName = data.red.replace(" ", "_") + ".zip"
+            download(response.data, fileName, response.headers['content-type'])
+            return { success: true }
+        } else {
+            console.log("not instanceof Blob");
+        }
+
+        return response.data
     } catch (error) {
         throw error;
     }

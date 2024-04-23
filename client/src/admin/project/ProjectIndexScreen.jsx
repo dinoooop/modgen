@@ -84,6 +84,7 @@ export default function () {
                                             <td className='action'>
                                                 <AppIcon onClick={handleDelete} item={data} icon="trash" />
                                                 <AppIcon to={`/admin/projects/${data.id}`} icon="edit" />
+                                                <AppIcon to={`/admin/generate/${data.id}`} icon="gears" />
                                             </td>
                                         </tr>
                                     ))
@@ -99,6 +100,17 @@ export default function () {
                         pageRangeDisplayed={5}
                         onChange={handlePagination}
                     />
+                </div>
+            </div>
+
+            <button id="modalTrigger">Open Modal</button>
+
+
+            <div id="modal" className="modal">
+                <div className="modal-content">
+                    <span className="close">&times;</span>
+                    <h2>Modal Title</h2>
+                    <p>Modal content goes here...</p>
                 </div>
             </div>
         </DashboardLayout>

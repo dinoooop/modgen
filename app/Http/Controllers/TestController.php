@@ -15,7 +15,16 @@ class TestController extends Controller
     public function test()
     {
 
+        $zip = new ZipSave();
         
-
+        $yellow = $zip->getPossibleKeys('project');
+        $red = $zip->getPossibleKeys('pole slab');
+        // $possibleKeys = array_combine(
+        //     $zip->getPossibleKeys('project'),
+        //     $zip->getPossibleKeys('pole slab'),
+        // );
+        print_r($yellow);
+        print_r($red);
+        
     }
 }

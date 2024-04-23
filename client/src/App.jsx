@@ -14,6 +14,7 @@ import "./styles/grid.css";
 import "./styles/admin.css";
 import "./styles/front.css";
 import "./styles/responsive.css";
+import ProjectGenerateScreen from "./admin/project/ProjectGenerateScreen";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path='/admin/projects' element={<ProjectIndexScreen />} />
           <Route path='/admin/projects/create' element={<ProjectCreateScreen />} />
           <Route path='/admin/projects/:id' element={<ProjectEditScreen />} />
+          <Route path='/admin/generate/:id' element={<ProjectGenerateScreen />} />
 
           <Route path='/admin/posts' element={<PostIndexScreen />} />
           <Route path='/admin/posts/create' element={<PostCreateScreen />} />

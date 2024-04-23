@@ -1,44 +1,93 @@
-class Validator {
-	validate(e, validateForm) {
-		if (e.target.type === 'file') {
-			const file = e.target.files[0];
-			const error = validateForm(e.target.name, file);
+export default class Validator {
+
+	validate(e, validateForm, formValues = null) {
+
+		const { name, value, type, checked, files, options, multiple } = e.target;
+
+		if (multiple) {
+			// Handle multi-select change
+			const selectedValues = [];
+			for (let i = 0; i < options.length; i++) {
+				if (options[i].selected) {
+					selectedValues.push(options[i].value);
+				}
+			}
+
 			return {
-				formData: { [e.target.name]: file },
-				error: { [e.target.name]: error }
-			};
+				formValues: { [name]: selectedValues },
+				error: { [name]: validateForm(name, selectedValues) }
+			}
+		}
+
+		if (type === 'checkbox') {
+
+			// Special condition for single checkbox
+			if (name === 'status') {
+				return {
+					formValues: { [name]: value },
+					error: { [name]: validateForm(name, value) }
+				}
+			}
+
+			const error = validateForm(name, value)
+			const newFormValues = { ...formValues }
+
+			if (checked) {
+				newFormValues[name] = [...(newFormValues[name] || []), value]
+			} else {
+				newFormValues[name] = (newFormValues[name] || []).filter((val) => val !== value)
+			}
+
+			return { formValues: newFormValues, error: { [name]: error } }
+
+		} else if (type === 'file') {
+			const file = files[0]
+			const error = validateForm(name, file)
+			return {
+				formValues: { [name]: file },
+				error: { [name]: error }
+			}
 		} else {
-			const error = validateForm(e.target.name, e.target.value);
+			const error = validateForm(name, value)
 			return {
-				formData: { [e.target.name]: e.target.value },
-				error: { [e.target.name]: error }
-			};
+				formValues: { [name]: value },
+				error: { [name]: error }
+			}
 		}
 	}
 
-	submit(formData, validateForm) {
+	submit(formValues, validateForm) {
 		const updatedErrors = {}
-		Object.entries(formData).forEach(([key, value]) => {
+		Object.entries(formValues).forEach(([key, value]) => {
 			updatedErrors[key] = validateForm(key, value)
 		})
-
 		const allErrorsFalse = Object.values(updatedErrors).every(error => error === false)
+
 		if (allErrorsFalse) {
-			const newFormData = new FormData()
-			Object.entries(formData).forEach(([key, value]) => {
-				newFormData.append(key, value)
-			})
-
-			return newFormData;
-
-			// navigate('/admin/projects')
+			return formValues
 		}
 
-		return { errors: updatedErrors };
-
-
+		return { errors: updatedErrors }
 	}
-}
 
-const validator = new Validator();
-export default validator;
+	submitFile(formValues, validateField) {
+
+		const updatedErrors = Object.fromEntries(
+			Object.entries(formValues).map(([key, value]) => [key, validateField(key, value)])
+		)
+
+		const allErrorsFalse = Object.values(updatedErrors).every((error) => error === false)
+
+		if (allErrorsFalse) {
+			const newFormData = new FormData()
+			Object.entries(formValues).forEach(([key, value]) => {
+				newFormData.append(key, value)
+			});
+
+			return newFormData
+		}
+
+		return { errors: updatedErrors }
+	}
+
+}
