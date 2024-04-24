@@ -20,7 +20,7 @@ export const index = createAsyncThunk('module/index', async (data = {}) => {
         });
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message);
+        throw error;
     }
 });
 
@@ -38,7 +38,7 @@ export const store = createAsyncThunk('module/store', async (formData) => {
         const response = await axios.post(`${config.api}/modules`, formData, config.formdataheader());
         return response.data;
     } catch (error) {
-        throw error;
+        throw new Error(error.response.data.message)
     }
 });
 
@@ -51,7 +51,7 @@ export const update = createAsyncThunk('module/update', async (formData) => {
             const response = await axios.post(`${config.api}/modules/${id}`, formData, config.formdataheader());
             return response.data;
         } catch (error) {
-            throw error;
+            throw new Error(error.response.data.message)
         }
 
     } else {
@@ -61,11 +61,10 @@ export const update = createAsyncThunk('module/update', async (formData) => {
             const response = await axios.put(`${config.api}/modules/${id}`, formData, config.header());
             return response.data;
         } catch (error) {
-            throw error;
+            throw new Error(error.response.data.message)
         }
     }
 });
-
 
 export const destroy = createAsyncThunk('module/destroy', async (module) => {
     try {
@@ -86,10 +85,9 @@ export const generate = createAsyncThunk('module/generate', async (data) => {
         } else {
             console.log("not instanceof Blob");
         }
-
         return response.data
     } catch (error) {
-        throw error;
+        throw new Error(error.response.data.message)
     }
 });
 
@@ -103,45 +101,41 @@ export const moduleSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(index.pending, (state) => {
-                state.loading = true;
-            })
             .addCase(index.fulfilled, (state, action) => {
-                state.modules = action.payload.data;
-                state.perPage = action.payload.per_page;
-                state.total = action.payload.total;
-                state.loading = false;
-            })
-            .addCase(index.rejected, (state, action) => {
-                console.error('Error fetching modules:', action.error);
-                console.log(action.error.message);
-                state.loading = false;
-                state.error = action.error.message;
-            })
-
-            .addCase(show.pending, (state) => {
-                state.loading = true;
+                state.modules = action.payload.data
+                state.perPage = action.payload.per_page
+                state.total = action.payload.total
+                state.loading = false
             })
             .addCase(show.fulfilled, (state, action) => {
-                state.module = action.payload;
-                state.loading = false;
-            })
-            .addCase(show.rejected, (state, action) => {
-                console.error('Error fetching module:', action.error);
-                state.loading = false;
+                state.loading = false
+                state.module = action.payload
             })
 
             // Store
             .addCase(store.pending, (state) => {
-                state.loading = true;
+                state.loading = true
             })
             .addCase(store.fulfilled, (state, action) => {
-                state.module = action.payload;
-                state.loading = false;
+                state.loading = false
+                state.module = action.payload
             })
             .addCase(store.rejected, (state, action) => {
-                console.error('Error fetching module:', action.error);
-                state.loading = false;
+                state.loading = false
+                state.error = action.error.message
+            })
+
+            // update
+            .addCase(update.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(update.fulfilled, (state, action) => {
+                state.loading = false
+                state.module = action.payload
+            })
+            .addCase(update.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
             });
     },
 })

@@ -71,7 +71,7 @@
     width: 100%;
 }
 
-/* Column widths for extra small screens (xs) */
+/* extra small screens (xs) */
 @media (max-width: 575.98px) {
     .col-xs-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
     .col-xs-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
@@ -87,8 +87,8 @@
     .col-xs-12 { flex: 0 0 100%; max-width: 100%; }
 }
 
-/* Column widths for small screens (sm) */
-@media (min-width: 576px) and (max-width: 767.98px) {
+/* small screens (sm) */
+@media (min-width: 576px) {
     .col-sm-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
     .col-sm-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
     .col-sm-3 { flex: 0 0 25%; max-width: 25%; }
@@ -103,8 +103,8 @@
     .col-sm-12 { flex: 0 0 100%; max-width: 100%; }
 }
 
-/* Column widths for medium screens (md) */
-@media (min-width: 768px) and (max-width: 991.98px) {
+/* medium screens (md) */
+@media (min-width: 768px) {
     .col-md-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
     .col-md-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }
     .col-md-3 { flex: 0 0 25%; max-width: 25%; }
@@ -119,7 +119,7 @@
     .col-md-12 { flex: 0 0 100%; max-width: 100%; }
 }
 
-/* Column widths for large screens (lg) */
+/* large screens (lg) */
 @media (min-width: 992px) {
     .col-lg-1 { flex: 0 0 8.333333%; max-width: 8.333333%; }
     .col-lg-2 { flex: 0 0 16.666667%; max-width: 16.666667%; }

@@ -69,8 +69,6 @@ class AuthController extends Controller
     }
     public function check(Request $request)
     {
-
-    
         $data['user'] = Auth::user();
         return response()->json($data);
     }

@@ -4,6 +4,7 @@ use App\Http\Controllers\ModuleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +21,12 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/check', [AuthController::class, 'check']);
+    
     Route::post('/modules/{id}', [ModuleController::class, 'update']);
     Route::post('/generate/{id}', [ModuleController::class, 'generate']);
     Route::resource('modules', ModuleController::class);
-    Route::get('/check', [AuthController::class, 'check']);
-    Route::post('/logout', [AuthController::class, 'logout']);
+    
+    Route::resource('posts', PostController::class);
 });

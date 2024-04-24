@@ -21,10 +21,10 @@ export default class Validator {
 
 		if (type === 'checkbox') {
 
-			// Special condition for single checkbox
+			// Special conditions by name, for single checkbox
 			if (name === 'status') {
 				return {
-					formValues: { [name]: value },
+					formValues: { [name]: checked },
 					error: { [name]: validateForm(name, value) }
 				}
 			}

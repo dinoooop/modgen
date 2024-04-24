@@ -13,14 +13,13 @@ export default function () {
     const validator = new Validator()
     const fileInputRef = useRef(null)
 
+    const [errors, setErrors] = useState({})
     const [formValues, setFormValues] = useState({
         title: "",
         content: "",
         yellow: "",
         zip: "",
     })
-
-    const [errors, setErrors] = useState({})
 
     const onChangeForm = (e) => {
         setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))

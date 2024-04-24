@@ -44,8 +44,8 @@ export default function () {
 
     return (
         <BlankLayout>
-            <div className="midbox">
-                <div className='cardbody'>
+                        <div className='cardbody col-md-4 col-sm-8'>
+
                     <h1>Sign Up</h1>
                     <p className="my-1">Have an account? <Link to="/login">Log in now</Link></p>
                     {
@@ -102,7 +102,6 @@ export default function () {
                         <button type='submit' className="btn submit">SIGN UP</button>
                     </form>
                 </div>
-            </div>
         </BlankLayout>
     )
 }

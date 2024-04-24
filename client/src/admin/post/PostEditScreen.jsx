@@ -4,15 +4,17 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { show, update } from './postSlice'
 import { validateForm } from './postValidation'
 import DashboardLayout from '../layouts/DashboardLayout'
+import Validator from '../../helpers/validator'
 
 export default function () {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams()
+    const validator = new Validator()
 
-    const stateFormData = useSelector(state => state.post)
-    const [formData, setFormData] = useState(stateFormData.post || {})
+    const stateFormValues = useSelector(state => state.post)
+    const [formValues, setFormValues] = useState(stateFormValues.post || {})
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
@@ -20,39 +22,30 @@ export default function () {
     }, [dispatch, params.id])
 
     useEffect(() => {
-        if (stateFormData.post) {
-            setFormData(stateFormData.post)
+        if (stateFormValues.post) {
+            setFormValues(stateFormValues.post)
         }
-    }, [stateFormData.post])
+    }, [stateFormValues.post])
 
     const onChangeForm = (e) => {
-        if (e.target.type === 'checkbox') {
-            setFormData(prev => ({ ...prev, [e.target.name]: e.target.checked }))
-        } else {
-            setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }))
-        }
-
-        const error = validateForm(e.target.name, e.target.value)
-        setErrors(prev => ({ ...prev, [e.target.name]: error }))
+        setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))
+        setErrors(prev => ({ ...prev, ...validator.validate(e, validateForm).error }))
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const updatedErrors = {}
-        Object.entries(formData).forEach(([key, value]) => {
-            updatedErrors[key] = validateForm(key, value)
-        })
-        setErrors(prev => ({ ...prev, ...updatedErrors }))
-        const allErrorsFalse = Object.values(updatedErrors).every(error => error === false)
-        if (allErrorsFalse) {
-            dispatch(update(formData)).then(() => {
-                navigate('/admin/posts')
-            })
+        const submitData = validator.submit(formValues, validateForm)
+        if (typeof submitData.errors != 'undefined') {
+            setErrors(submitData.errors)
+        } else {
+            dispatch(update(submitData))
+            navigate('/admin/posts')
         }
     }
 
     return (
         <DashboardLayout>
+
             <div className="page-header">
                 <h1>Edit Post</h1>
             </div>
@@ -62,27 +55,27 @@ export default function () {
                     <form onSubmit={handleSubmit}>
 
                         <div className="form-group">
-                            <label htmlFor="email">Post Name</label>
+                            <label htmlFor="title">Title</label>
                             <input type="text"
                                 className="form-control input-field"
-                                id="name"
-                                value={formData.name || ""}
-                                name="name"
+                                id="title"
+                                value={formValues.title || ""}
+                                name="title"
                                 onChange={onChangeForm}
                             />
-                            <div className="color-red">{errors.name}</div>
+                            <div className="color-red">{errors.title}</div>
                         </div>
 
                         <div className="form-group">
-                            <label htmlFor="description">Description</label>
+                            <label htmlFor="content">Content</label>
                             <textarea
                                 className="form-control input-field"
-                                id="description"
-                                value={formData.description || ""}
-                                name="description"
+                                id="content"
+                                value={formValues.content || ""}
+                                name="content"
                                 onChange={onChangeForm}
                             />
-                            <div className="color-red">{errors.description}</div>
+                            <div className="color-red">{errors.content}</div>
                         </div>
 
                         <div className="form-group">
@@ -93,7 +86,7 @@ export default function () {
                                     value={1}
                                     name="status"
                                     onChange={onChangeForm}
-                                    checked={formData.status}
+                                    checked={formValues.status || ""}
                                 /> Status
                             </label>
                             <div className="color-red">{errors.status}</div>
@@ -105,6 +98,7 @@ export default function () {
                     </form>
                 </div>
             </div>
+
         </DashboardLayout>
     )
 }

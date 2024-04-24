@@ -12,7 +12,7 @@ export default function () {
     const dispatch = useDispatch()
 
     const { posts, perPage, total } = useSelector(state => state.post)
-    const [formData, setFormData] = useState({
+    const [formValues, setFormValues] = useState({
         search: "",
         so: "",
         sb: "",
@@ -21,12 +21,12 @@ export default function () {
 
     useEffect(() => {
         const data = Object.fromEntries(
-            Object.entries(formData)
+            Object.entries(formValues)
                 .filter(([key, value]) => value !== "")
                 .map(([key, value]) => [key, value])
         );
         dispatch(index(data))
-    }, [dispatch, formData])
+    }, [dispatch, formValues])
 
     const handleDelete = (post) => {
         dispatch(remove(post))
@@ -34,15 +34,15 @@ export default function () {
     }
 
     const handleSearch = e => {
-        setFormData({ search: e.target.value })
+        setFormValues({ search: e.target.value })
     }
 
     const handleSort = (order, name) => {
-        setFormData(prev => ({ ...prev, so: order, sb: name }))
+        setFormValues(prev => ({ ...prev, so: order, sb: name }))
     }
 
     const handlePagination = number => {
-        setFormData(prev => ({ ...prev, page: number }))
+        setFormValues(prev => ({ ...prev, page: number }))
     }
 
     return (
@@ -55,7 +55,7 @@ export default function () {
                         <input type="text"
                             className="form-control input-field"
                             id="search"
-                            value={formData.search}
+                            value={formValues.search}
                             name="search"
                             onChange={handleSearch}
                         />
@@ -71,7 +71,7 @@ export default function () {
                             <thead>
                                 <tr>
                                     <th># <SortArrow onClick={handleSort} column="id" /></th>
-                                    <th>Post Name <SortArrow onClick={handleSort} column="name" /></th>
+                                    <th>Post Title <SortArrow onClick={handleSort} column="title" /></th>
                                     <th>Status</th>
                                     <th>Action</th>
                                 </tr>
@@ -81,11 +81,14 @@ export default function () {
                                     posts.map((data) => (
                                         <tr key={data.id}>
                                             <td>{data.id}</td>
-                                            <td><Link to={`/admin/posts/${data.id}`}>{data.name}</Link></td>
-                                            <td>{data.status ? 
-                                            <i class="fa-regular fa-circle-check"></i>:
-                                            <i class="fa-regular fa-circle-xmark"></i>
-                                            }</td>
+                                            <td><Link to={`/admin/posts/${data.id}`}>{data.title}</Link></td>
+                                            <td>
+                                                {
+                                                    data.status ?
+                                                        <i className="fa-regular fa-circle-check"></i> :
+                                                        <i className="fa-regular fa-circle-xmark"></i>
+                                                }
+                                            </td>
                                             <td className='action'>
                                                 <AppIcon onClick={handleDelete} item={data} icon="trash" />
                                                 <AppIcon to={`/admin/posts/${data.id}`} icon="edit" />
@@ -98,7 +101,7 @@ export default function () {
 
                     </div>
                     <Pagination
-                        activePage={formData.page}
+                        activePage={formValues.page}
                         itemsCountPerPage={perPage}
                         totalItemsCount={total}
                         pageRangeDisplayed={5}

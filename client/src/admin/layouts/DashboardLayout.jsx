@@ -38,7 +38,7 @@ export default function (props) {
                         <div className="logo">
                             <Link to="/">
                                 <img src="/images/logo.png" alt="" />
-                                <div className='logo-text'>OS</div>
+                                <div className='logo-text'>MODGEN</div>
                             </Link>
                         </div>
                         <div className="close"><i className="fa-solid fa-close" onClick={() => setViewSideNav(!viewSidenav)}></i></div>

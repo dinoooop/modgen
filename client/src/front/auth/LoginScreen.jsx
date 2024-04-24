@@ -42,44 +42,44 @@ export default function () {
 
     return (
         <BlankLayout>
-            <div className="midbox">
-                <div className='cardbody'>
-                    <h1>Login</h1>
-                    <p className="my-1">Don't have an account? <Link to="/register">Sign Up</Link></p>
 
-                    {
-                        serverError &&
-                        <p className='red-alert'>{serverError}</p>
-                    }
+            <div className='cardbody col-md-4 col-sm-8'>
+                <h1>Login</h1>
+                <p className="my-1">Don't have an account? <Link to="/register">Sign Up</Link></p>
 
-                    <form onSubmit={handleSubmit}>
-                        <div className="form-group">
-                            <label htmlFor="email">Email</label>
-                            <input type="email"
-                                className="form-control input-field"
-                                id="email"
-                                value={formData.email}
-                                name="email"
-                                onChange={onChangeForm}
-                            />
-                            <div className="color-red">{errors.email}</div>
-                        </div>
+                {
+                    serverError &&
+                    <p className='red-alert'>{serverError}</p>
+                }
 
-                        <div className="form-group">
-                            <label htmlFor="password">Password</label>
-                            <input type="password"
-                                className="form-control input-field"
-                                id="password"
-                                value={formData.password}
-                                name="password"
-                                onChange={onChangeForm}
-                            />
-                            <div className="color-red">{errors.password}</div>
-                        </div>
-                        <button type='submit' className="btn submit">SIGN IN</button>
-                    </form>
-                </div>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-group">
+                        <label htmlFor="email">Email</label>
+                        <input type="email"
+                            className="form-control input-field"
+                            id="email"
+                            value={formData.email}
+                            name="email"
+                            onChange={onChangeForm}
+                        />
+                        <div className="color-red">{errors.email}</div>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input type="password"
+                            className="form-control input-field"
+                            id="password"
+                            value={formData.password}
+                            name="password"
+                            onChange={onChangeForm}
+                        />
+                        <div className="color-red">{errors.password}</div>
+                    </div>
+                    <button type='submit' className="btn submit">SIGN IN</button>
+                </form>
             </div>
+
         </BlankLayout>
     )
 }

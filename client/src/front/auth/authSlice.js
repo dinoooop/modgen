@@ -27,7 +27,6 @@ export const check = createAsyncThunk('auth/check', async (data = {}) => {
             localStorage.removeItem('token')
             window.location.href = '/login';
         }
-        // throw new Error(error.response.data.message);
     }
 });
 

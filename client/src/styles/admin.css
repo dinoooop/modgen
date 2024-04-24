@@ -38,6 +38,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     width: 100vw;
     min-height: 100vh;
     padding: 1rem;
@@ -57,13 +58,12 @@ aside {
     line-height: 0.8rem;
     overflow-y: auto;
     overflow-x: hidden;
-    width: 190px;
+    min-width: 190px;
 }
 
 .display-aside {
     display: block;
     left: 25px;
-    width: 100%;
     position: fixed;
     top: 0px;
     left: 0px;
@@ -520,6 +520,7 @@ i.icon.vibrant {
     padding: 1rem;
     overflow-x: scroll;
     border-radius: 0.5rem;
+    width: 100%;
 }
 
 .cardbody-50 {
@@ -702,22 +703,7 @@ ul.pagination {
     min-width: 100vw;
 }
 
-.midbox .cardbody {
-    width: 30%;
-}
 
-.blankbox {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-width: 100vw;
-}
-
-.blankbox .cardbody {
-    width: 40%;
-    text-align: center;
-    padding: 2rem;
-}
 
 
 
@@ -1123,7 +1109,6 @@ td .fa-circle-check {
     margin: 15% auto;
     padding: 20px;
     border: 1px solid var(--grey);
-    width: 30%;
   }
   
   .close {
@@ -1144,4 +1129,14 @@ td .fa-circle-check {
   i.help {
     font-size: 0.7rem;
     color: var(--grey);
+  }
+
+  .red {
+    background-color: #640c1f;
+    padding: 1rem;
+  }
+  .green {
+    background-color: #08220e;
+    padding: 1rem;
+
   }

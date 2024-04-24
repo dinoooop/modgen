@@ -64,7 +64,7 @@ export default function () {
             </div>
 
             <div className="row">
-                <div className='cardbody col-lg-12'>
+                <div className='cardbody'>
                     <div className="index-table-container">
 
                         <table className="index-table">
