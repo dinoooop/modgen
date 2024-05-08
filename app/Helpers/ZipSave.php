@@ -74,7 +74,6 @@ class ZipSave extends ZipSaveAce
         }
 
         foreach ($files as $file) {
-
             $basename = basename($file);
             foreach ($yellows as $key => $yellow) {
                 if (strpos($basename, $yellow) !== false) {

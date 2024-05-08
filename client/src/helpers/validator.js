@@ -48,7 +48,7 @@ export default class Validator {
 				error: { [name]: error }
 			}
 		} else {
-			const error = validateForm(name, value)
+			const error = validateForm(name, value, formValues)
 			return {
 				formValues: { [name]: value },
 				error: { [name]: error }
@@ -59,7 +59,7 @@ export default class Validator {
 	submit(formValues, validateForm) {
 		const updatedErrors = {}
 		Object.entries(formValues).forEach(([key, value]) => {
-			updatedErrors[key] = validateForm(key, value)
+			updatedErrors[key] = validateForm(key, value, formValues)
 		})
 		const allErrorsFalse = Object.values(updatedErrors).every(error => error === false)
 

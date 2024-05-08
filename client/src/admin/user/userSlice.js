@@ -1,20 +1,20 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from 'axios'
 import config from '../../config'
-import download from 'downloadjs'
 
 const initialState = {
     items: [],
     item: {},
-    loading: false,
     perPage: 0,
     total: 0,
-    error: ''
+    loading: false,
+    success: '',
+    error: '',
 }
 
-export const index = createAsyncThunk('module/index', async (data = {}) => {
+export const index = createAsyncThunk('user/index', async (data = {}) => {
     try {
-        const response = await axios.get(`${config.api}/modules`, {
+        const response = await axios.get(`${config.api}/users`, {
             params: data,
             headers: config.header().headers,
         })
@@ -24,79 +24,52 @@ export const index = createAsyncThunk('module/index', async (data = {}) => {
     }
 })
 
-export const show = createAsyncThunk('module/show', async (id) => {
+export const show = createAsyncThunk('user/show', async (id) => {
     try {
-        const response = await axios.get(`${config.api}/modules/${id}`, config.header())
+        const response = await axios.get(`${config.api}/users/${id}`, config.header())
         return response.data
     } catch (error) {
         throw error.response.data.message
     }
 })
 
-export const store = createAsyncThunk('module/store', async (data) => {
+export const store = createAsyncThunk('user/store', async (data) => {
     try {
-        const response = await axios.post(`${config.api}/modules`, data, config.formdataheader())
+        const response = await axios.post(`${config.api}/users`, data, config.formdataheader())
         return response.data
     } catch (error) {
         throw error.response.data.message
     }
 })
 
-export const update = createAsyncThunk('module/update', async (formData) => {
-
-    if (typeof formData.id === 'undefined') {
-        // a file upload // use POST
-        const id = formData.get('id')
-        try {
-            const response = await axios.post(`${config.api}/modules/${id}`, formData, config.formdataheader())
-            return response.data
-        } catch (error) {
-            throw error.response.data.message
-        }
-
-    } else {
-        // Normal data update using PUT
-        const id = formData.id
-        try {
-            const response = await axios.put(`${config.api}/modules/${id}`, formData, config.header())
-            return response.data
-        } catch (error) {
-            throw error.response.data.message
-        }
-    }
-})
-
-export const destroy = createAsyncThunk('module/destroy', async (data) => {
+export const update = createAsyncThunk('user/update', async (data) => {
     try {
-        const response = await axios.delete(`${config.api}/modules/${data.id}`, config.header())
+        const response = await axios.put(`${config.api}/users/${data.id}`, data, config.header())
         return response.data
     } catch (error) {
         throw error.response.data.message
     }
 })
 
-export const generate = createAsyncThunk('module/generate', async (data) => {
+export const destroy = createAsyncThunk('user/destroy', async (data) => {
     try {
-        const response = await axios.post(`${config.api}/generate/${data.id}`, data, config.blobheader())
-        if (response.data instanceof Blob) {
-            const fileName = data.red.replace(" ", "_") + ".zip"
-            download(response.data, fileName, response.headers['content-type'])
-            return { success: true }
-        } else {
-            console.log("not instance of Blob")
-        }
+        const response = await axios.delete(`${config.api}/users/${data.id}`, config.header())
         return response.data
     } catch (error) {
         throw error.response.data.message
     }
 })
 
-export const moduleSlice = createSlice({
-    name: 'module',
+export const userSlice = createSlice({
+    name: 'user',
     initialState,
     reducers: {
         remove: (state, action) => {
             state.items = state.items.filter(item => item.id !== action.payload.id)
+        },
+        reset: (state, action) => {
+            state.error = ''
+            state.success = ''
         },
     },
     extraReducers: (builder) => {
@@ -119,6 +92,8 @@ export const moduleSlice = createSlice({
             // show
             .addCase(show.pending, (state) => {
                 state.loading = true
+                state.success = ''
+                state.error = ''
             })
             .addCase(show.fulfilled, (state, action) => {
                 state.loading = false
@@ -136,6 +111,7 @@ export const moduleSlice = createSlice({
             .addCase(store.fulfilled, (state, action) => {
                 state.loading = false
                 state.item = action.payload
+                state.error = ''
             })
             .addCase(store.rejected, (state, action) => {
                 state.loading = false
@@ -145,10 +121,12 @@ export const moduleSlice = createSlice({
             // update
             .addCase(update.pending, (state) => {
                 state.loading = true
+                state.success = ''
             })
             .addCase(update.fulfilled, (state, action) => {
                 state.loading = false
-                state.item = action.payload
+                state.error = ''
+                state.success = action.payload.message ?? ''
             })
             .addCase(update.rejected, (state, action) => {
                 state.loading = false
@@ -169,6 +147,6 @@ export const moduleSlice = createSlice({
     },
 })
 
-export const { remove } = moduleSlice.actions
+export const { remove, reset } = userSlice.actions
 
-export default moduleSlice.reducer
+export default userSlice.reducer

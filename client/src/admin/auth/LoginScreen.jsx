@@ -1,42 +1,48 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux"
-import { login } from './authSlice'
-import { validateLoginForm } from './authValidation'
 import BlankLayout from '../layouts/BlankLayout'
+import Validator from '../../helpers/Validator'
+import { unwrapResult } from '@reduxjs/toolkit'
+import { login, reset } from './authSlice'
+import { validateLoginForm } from './authValidation'
 
 export default function () {
 
-    const navigate = useNavigate()
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const validator = new Validator()
 
-    const [formData, setLogin] = useState({ email: "admin@mail.com", password: "welcome" })
+    const [formValues, setFormValues] = useState({ email: "admin@mail.com", password: "welcome" })
     const [errors, setErrors] = useState({})
-    const authUser = useSelector(state => state.auth.user)
-    const serverError = useSelector(state => state.auth.error)
+    const { user: authUser, error } = useSelector(state => state.auth)
 
     useEffect(() => {
+        dispatch(reset())
         if (authUser) {
             navigate('/admin/modules')
         }
     }, [authUser])
 
     const onChangeForm = (e) => {
-        setLogin(prev => ({ ...prev, [e.target.name]: e.target.value }))
-        const error = validateLoginForm(e.target.name, e.target.value)
-        setErrors(prev => ({ ...prev, [e.target.name]: error }))
+        const validated = validator.validate(e, validateLoginForm, formValues)
+        setFormValues(prev => ({ ...prev, ...validated.formValues }))
+        setErrors(prev => ({ ...prev, ...validated.error }))
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault()
-        const updatedErrors = {}
-        Object.entries(formData).forEach(([key, value]) => {
-            updatedErrors[key] = validateLoginForm(key, value)
-        })
-        setErrors(prev => ({ ...prev, ...updatedErrors }))
-        const allErrorsFalse = Object.values(updatedErrors).every(error => error === false)
-        if (allErrorsFalse) {
-            dispatch(login(formData))
+        const newFormData = validator.submit(formValues, validateLoginForm)
+        if (typeof newFormData.errors != 'undefined') {
+            setErrors(newFormData.errors)
+        } else {
+            try {
+                const resultAction = await dispatch(login(newFormData))
+                unwrapResult(resultAction)
+                navigate('/admin/modules')
+            } catch (error) {
+                console.error(error)
+            }
         }
     }
 
@@ -48,17 +54,17 @@ export default function () {
                 <p className="my-1">Don't have an account? <Link to="/register">Sign Up</Link></p>
 
                 {
-                    serverError &&
-                    <p className='red-alert'>{serverError}</p>
+                    error &&
+                    <p className='red-alert'>{error}</p>
                 }
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} noValidate={true}>
                     <div className="form-group">
                         <label htmlFor="email">Email</label>
                         <input type="email"
                             className="form-control input-field"
                             id="email"
-                            value={formData.email}
+                            value={formValues.email}
                             name="email"
                             onChange={onChangeForm}
                         />
@@ -70,7 +76,7 @@ export default function () {
                         <input type="password"
                             className="form-control input-field"
                             id="password"
-                            value={formData.password}
+                            value={formValues.password}
                             name="password"
                             onChange={onChangeForm}
                         />

@@ -1,23 +1,17 @@
-import { useDispatch, useSelector } from 'react-redux';
-import AppIcon from '../components/AppIcon';
-import DashboardLayout from '../layouts/DashboardLayout';
-import { destroy, index, remove } from './postSlice';
-import { useEffect, useState } from 'react';
-import SortArrow from '../components/SortArrow';
-import Pagination from "react-js-pagination";
-import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux'
+import AppIcon from '../components/AppIcon'
+import { destroy, index, remove } from './userSlice'
+import { useEffect, useState } from 'react'
+import SortArrow from '../components/SortArrow'
+import Pagination from "react-js-pagination"
+import { Link } from 'react-router-dom'
+import ProtectedLayout from '../layouts/ProtectedLayout'
 
 export default function () {
 
     const dispatch = useDispatch()
-
-    const { posts, perPage, total } = useSelector(state => state.post)
-    const [formValues, setFormValues] = useState({
-        search: "",
-        so: "",
-        sb: "",
-        page: 1,
-    });
+    const { items, perPage, total } = useSelector(state => state.user)
+    const [formValues, setFormValues] = useState({ search: "", so: "", sb: "", page: 1 })
 
     useEffect(() => {
         const data = Object.fromEntries(
@@ -26,11 +20,12 @@ export default function () {
                 .map(([key, value]) => [key, value])
         );
         dispatch(index(data))
+
     }, [dispatch, formValues])
 
-    const handleDelete = (post) => {
-        dispatch(remove(post))
-        dispatch(destroy(post))
+    const handleDelete = (user) => {
+        dispatch(remove(user))
+        dispatch(destroy(user))
     }
 
     const handleSearch = e => {
@@ -46,9 +41,9 @@ export default function () {
     }
 
     return (
-        <DashboardLayout>
+        <ProtectedLayout roles="admin">
             <div className="page-header">
-                <h1>Posts</h1>
+                <h1>Users</h1>
                 <div className="other-actions">
                     <AppIcon to="create" icon="add" />
                     <div className="search">
@@ -64,34 +59,26 @@ export default function () {
             </div>
 
             <div className="row">
-                <div className='cardbody col-lg-12'>
+                <div className='cardbody'>
                     <div className="index-table-container">
 
                         <table className="index-table">
                             <thead>
                                 <tr>
                                     <th># <SortArrow onClick={handleSort} column="id" /></th>
-                                    <th>Post Title <SortArrow onClick={handleSort} column="title" /></th>
-                                    <th>Status</th>
+                                    <th>Name <SortArrow onClick={handleSort} column="title" /></th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {
-                                    posts.map((data) => (
-                                        <tr key={data.id}>
-                                            <td>{data.id}</td>
-                                            <td><Link to={`/admin/posts/${data.id}`}>{data.title}</Link></td>
-                                            <td>
-                                                {
-                                                    data.status ?
-                                                        <i className="fa-regular fa-circle-check"></i> :
-                                                        <i className="fa-regular fa-circle-xmark"></i>
-                                                }
-                                            </td>
+                                    items.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>{item.id}</td>
+                                            <td><Link to={`/admin/users/${item.id}`}>{item.name}</Link></td>
                                             <td className='action'>
-                                                <AppIcon onClick={handleDelete} item={data} icon="trash" />
-                                                <AppIcon to={`/admin/posts/${data.id}`} icon="edit" />
+                                                <AppIcon onClick={handleDelete} item={item} icon="trash" />
+                                                <AppIcon to={`/admin/users/${item.id}`} icon="edit" />
                                             </td>
                                         </tr>
                                     ))
@@ -109,7 +96,9 @@ export default function () {
                     />
                 </div>
             </div>
-        </DashboardLayout>
+
+        </ProtectedLayout>
+
 
     )
 }

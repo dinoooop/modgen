@@ -7,4 +7,11 @@
 - cancel button
 - Edit page
 - change to fillerSlabSlice.js not filler_slabSlice.js
-redirect 
+- redirect 
+- Profile page
+- Make login, register form same
+- mike profile page - this action is unautherised
+- empty security validation
+move user profile to auth profile
+email validation
+Home page design

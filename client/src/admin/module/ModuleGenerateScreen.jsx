@@ -1,23 +1,22 @@
-import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { generate, show, update } from './moduleSlice'
+import { generate } from './moduleSlice'
 import { validateForm } from './moduleValidation'
-import DashboardLayout from '../layouts/DashboardLayout'
-import Validator from '../../helpers/validator'
+import Validator from '../../helpers/Validator'
+import ProtectedLayout from '../layouts/ProtectedLayout'
 
 export default function () {
 
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const params = useParams()
-    
     const validator = new Validator();
 
     const [formValues, setFormValues] = useState({
         red: '',
         id: params.id
     })
+
     const [errors, setErrors] = useState({})
 
     const onChangeForm = (e) => {
@@ -36,7 +35,8 @@ export default function () {
     }
 
     return (
-        <DashboardLayout>
+        <ProtectedLayout roles="all">
+
             <div className="page-header">
                 <h1>Generate New Module</h1>
             </div>
@@ -57,7 +57,7 @@ export default function () {
                             <i className='help'>Small case with spaces</i>
                             <div className="color-red">{errors.red}</div>
                         </div>
-                        
+
 
                         <button type='submit' className="btn submit">Generate</button>
                         <Link to="/admin/modules" className="btn">Cancel</Link>
@@ -65,6 +65,6 @@ export default function () {
                     </form>
                 </div>
             </div>
-        </DashboardLayout>
+        </ProtectedLayout>
     )
 }

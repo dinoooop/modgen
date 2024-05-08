@@ -28,7 +28,7 @@ class AuthController extends Controller
                 'password' => 'required',
             ]);
 
-            $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->with('roles')->first();
 
             if (!$user || !Hash::check($request->password, $user->password)) {
                 throw new Exception("The provided credentials are incorrect.");
@@ -59,12 +59,12 @@ class AuthController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
+        $role = Role::where('key', 'subscriber')->first();
+        $user->roles()->attach($role->id);
+        
         $data['user'] = $user;
         $data['token'] = $user->createToken($user->name)->plainTextToken;
 
-
-        // $role = Role::where('name', 'user')->first(); 
-        // $user->roles()->attach($role);
         return response()->json($data);
     }
     public function check(Request $request)

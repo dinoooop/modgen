@@ -1,17 +1,17 @@
 import { useDispatch, useSelector } from 'react-redux';
 import AppIcon from '../components/AppIcon';
-import DashboardLayout from '../layouts/DashboardLayout';
 import { destroy, index, remove } from './moduleSlice';
 import { useEffect, useState } from 'react';
 import SortArrow from '../components/SortArrow';
 import Pagination from "react-js-pagination";
 import { Link } from 'react-router-dom';
+import ProtectedLayout from '../layouts/ProtectedLayout';
 
 export default function () {
 
     const dispatch = useDispatch()
 
-    const { modules, perPage, total } = useSelector(state => state.module)
+    const { items, perPage, total, error } = useSelector(state => state.module)
     const [formValues, setFormValues] = useState({
         search: "",
         so: "",
@@ -46,7 +46,8 @@ export default function () {
     }
 
     return (
-        <DashboardLayout>
+        <ProtectedLayout roles="all" error={error}>
+
             <div className="page-header">
                 <h1>Modules</h1>
                 <div className="other-actions">
@@ -77,14 +78,14 @@ export default function () {
                             </thead>
                             <tbody>
                                 {
-                                    modules.map((data) => (
-                                        <tr key={data.id}>
-                                            <td>{data.id}</td>
-                                            <td><Link to={`/admin/modules/${data.id}`}>{data.title}</Link></td>
+                                    items.map((item) => (
+                                        <tr key={item.id}>
+                                            <td>{item.id}</td>
+                                            <td><Link to={`/admin/modules/${item.id}`}>{item.title}</Link></td>
                                             <td className='action'>
-                                                <AppIcon onClick={handleDelete} item={data} icon="trash" />
-                                                <AppIcon to={`/admin/modules/${data.id}`} icon="edit" />
-                                                <AppIcon to={`/admin/generate/${data.id}`} icon="gears" />
+                                                <AppIcon onClick={handleDelete} item={item} icon="trash" />
+                                                <AppIcon to={`/admin/modules/${item.id}`} icon="edit" />
+                                                <AppIcon to={`/admin/generate/${item.id}`} icon="gears" />
                                             </td>
                                         </tr>
                                     ))
@@ -102,7 +103,7 @@ export default function () {
                     />
                 </div>
             </div>
-        </DashboardLayout>
+        </ProtectedLayout>
 
     )
 }

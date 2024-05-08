@@ -25,7 +25,7 @@ export const check = createAsyncThunk('auth/check', async (data = {}) => {
         if (error.response && error.response.status === 401) {
             localStorage.removeItem('authUser')
             localStorage.removeItem('token')
-            window.location.href = '/login';
+            window.location.href = '/login'
         }
     }
 });
@@ -35,7 +35,7 @@ export const register = createAsyncThunk('auth/register', async (data) => {
         const response = await axios.post(`${config.api}/register`, data);
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message);
+        throw error.response.data.message
     }
 });
 
@@ -44,7 +44,9 @@ export const login = createAsyncThunk('auth/login', async (data) => {
         const response = await axios.post(`${config.api}/login`, data);
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message);
+        // throw new Error(error.response.data.message);
+        throw error.response.data.message
+
     }
 });
 
@@ -54,7 +56,7 @@ export const logout = createAsyncThunk('auth/logout', async () => {
         const response = await axios.post(`${config.api}/logout`, null, config.header());
         return response.data;
     } catch (error) {
-        throw new Error(error.response.data.message);
+        throw error.response.data.message
     }
 });
 
@@ -63,29 +65,34 @@ export const authSlice = createSlice({
     initialState,
     reducers: {
         toggleTheme: (state, action) => {
-            console.log(action.payload);
             state.theme = action.payload
-            localStorage.setItem('theme', action.payload);
+            localStorage.setItem('theme', action.payload)
+        },
+        reset: (state, action) => {
+            state.error = ''
+            state.loading = false
         },
     },
     extraReducers: (builder) => {
         builder
+            // login
             .addCase(login.pending, (state) => {
-                state.loading = true;
+                state.loading = true
             })
             .addCase(login.fulfilled, (state, action) => {
-                state.user = action.payload.user;
-                state.loading = false;
+                state.user = action.payload.user
+                state.loading = false
+                state.error = ''
                 localStorage.setItem('authUser', JSON.stringify(action.payload.user))
                 localStorage.setItem('token', action.payload.token)
             })
             .addCase(login.rejected, (state, action) => {
-                state.loading = false;
-                state.error = action.error.message;
+                state.loading = false
+                state.error = action.error.message
             })
-            // Logout
+            // logout
             .addCase(logout.pending, (state) => {
-                state.loading = true;
+                state.loading = true
             })
             .addCase(logout.fulfilled, (state, action) => {
                 state.user = false
@@ -113,6 +120,6 @@ export const authSlice = createSlice({
             })
     },
 })
-export const { toggleTheme } = authSlice.actions
+export const { toggleTheme, reset } = authSlice.actions
 
 export default authSlice.reducer

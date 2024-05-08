@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './front/auth/authSlice'
+import authReducer from './admin/auth/authSlice'
 import ModuleReducer from './admin/module/moduleSlice'
-import PostReducer from './admin/post/postSlice'
+import GeneralReducer from './admin/general/generalSlice'
+import UserReducer from './admin/user/userSlice'
 
 export default configureStore({
   reducer: {
     auth: authReducer,
-    module:ModuleReducer,
-    post:PostReducer,
+    module: ModuleReducer,
+    general: GeneralReducer,
+    user: UserReducer,
   }
 })

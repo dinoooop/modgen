@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from "react-router-dom";
-import { logout } from "../../front/auth/authSlice";
+import { logout } from "../../admin/auth/authSlice";
 
 export default function () {
 
@@ -44,7 +44,8 @@ export default function () {
                 <div className="dropdown">
                     <div className="dropdown-arrow"></div>
                     <div className="list-button">
-                        <Link to={'/profile/'}><i className="fa-solid fa-user"></i>Profile</Link>
+                        <Link to={'/admin/profile'}><i className="fa-solid fa-user"></i>Profile</Link>
+                        <Link to={'/admin/security'}><i className="fa-solid fa-lock"></i>Security</Link>
                         <div className="link" onClick={handleLogout}><i className="fa-solid fa-arrow-right-from-bracket"></i>Logout</div>
                     </div>
                 </div>

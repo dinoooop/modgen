@@ -1,10 +1,10 @@
 <?php
 
+use App\Http\Controllers\GeneralController;
 use App\Http\Controllers\ModuleController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\PostController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,10 +23,12 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/check', [AuthController::class, 'check']);
+
+    Route::resource('users', UserController::class);
     
     Route::post('/modules/{id}', [ModuleController::class, 'update']);
     Route::post('/generate/{id}', [ModuleController::class, 'generate']);
     Route::resource('modules', ModuleController::class);
     
-    Route::resource('posts', PostController::class);
+    Route::post('/general/flush', [GeneralController::class, 'flush']);
 });

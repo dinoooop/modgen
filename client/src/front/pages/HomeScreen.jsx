@@ -7,7 +7,7 @@ export default function () {
             <section>
                 <div className="header  wrapper" id="myHeader">
                     <div className="logo">
-                        <Link to="/">OLD SMOKE</Link>
+                        <Link to="/">MODGEN</Link>
                     </div>
                     <ul className="nav">
                         <li className="login"><Link to="/login">Sign In</Link></li>

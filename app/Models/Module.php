@@ -11,8 +11,13 @@ class Module extends Model
 
     protected $fillable = [
         'title',
+        'user_id',
         'content',
         'yellow',
         'dir',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

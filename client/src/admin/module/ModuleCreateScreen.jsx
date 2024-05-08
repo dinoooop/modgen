@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { store } from './moduleSlice'
 import { validateForm } from './moduleValidation'
-import DashboardLayout from '../layouts/DashboardLayout'
-import Validator from '../../helpers/validator'
+import Validator from '../../helpers/Validator'
+import ProtectedLayout from '../layouts/ProtectedLayout'
 
 export default function () {
 
@@ -38,7 +38,8 @@ export default function () {
     }
 
     return (
-        <DashboardLayout>
+        <ProtectedLayout roles="all">
+
             <div className="page-header">
                 <h1>Create Module</h1>
             </div>
@@ -106,6 +107,6 @@ export default function () {
 
                 </div>
             </div>
-        </DashboardLayout>
+        </ProtectedLayout>
     )
 }

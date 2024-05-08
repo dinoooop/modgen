@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { show, update } from './moduleSlice'
 import { validateForm } from './moduleValidation'
-import DashboardLayout from '../layouts/DashboardLayout'
-import Validator from '../../helpers/validator'
+import Validator from '../../helpers/Validator'
+import ProtectedLayout from '../layouts/ProtectedLayout'
 
 export default function () {
 
@@ -14,19 +14,19 @@ export default function () {
     const fileInputRef = useRef(null)
     const validator = new Validator();
 
-    const stateFormData = useSelector(state => state.module)
-    const [formValues, setFormValues] = useState(stateFormData.module || {})
+    const {item, error} = useSelector(state => state.module)
+    const [formValues, setFormValues] = useState(item || {})
     const [errors, setErrors] = useState({})
-
+    
     useEffect(() => {
         dispatch(show(params.id));
     }, [dispatch, params.id]);
 
     useEffect(() => {
-        if (stateFormData.module) {
-            setFormValues(stateFormData.module);
+        if (item) {
+            setFormValues(item);
         }
-    }, [stateFormData.module]);
+    }, [item]);
 
     const onChangeForm = (e) => {
         setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))
@@ -45,7 +45,8 @@ export default function () {
     }
 
     return (
-        <DashboardLayout>
+        <ProtectedLayout roles="all" error={error}>
+
             <div className="page-header">
                 <h1>Edit Module</h1>
             </div>
@@ -103,7 +104,7 @@ export default function () {
                                 onChange={onChangeForm}
                                 placeholder="test"
                             />
-                            <div>{ formValues.dir || ''}</div>
+                            <div>{formValues.dir || ''}</div>
                             <div className="color-red">{errors.zip}</div>
                         </div>
 
@@ -113,6 +114,6 @@ export default function () {
                     </form>
                 </div>
             </div>
-        </DashboardLayout>
+        </ProtectedLayout>
     )
 }

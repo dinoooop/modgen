@@ -93,7 +93,7 @@ h1 {
 
 
 h4 {
-    
+
     font-weight: 300;
 }
 
@@ -192,13 +192,14 @@ li {
     right: 3.6rem;
 }
 
-.list-button a, .link {
+.list-button a,
+.link {
     display: block;
     padding: 1rem;
     border-bottom: 1px solid var(--color-4);
     transition: all 200ms ease;
     color: var(--vibrant);
-    cursor: pointer;    
+    cursor: pointer;
 }
 
 .list-button a:last-child {
@@ -769,14 +770,19 @@ ul.pagination {
     color: var(--danger-color);
 }
 
-.red-alert {
+.red-alert,
+.green-alert {
     background-color: var(--danger);
     padding: 1rem;
     border-radius: 0.5rem;
     margin-bottom: 1rem;
 }
 
-.red-alert p {
+.green-alert {
+    background-color: var(--success);
+}
+
+p.green-alert {
     color: var(--black);
 }
 
@@ -860,15 +866,15 @@ input[type="file"] {
     overflow: hidden;
     position: absolute;
     display: none;
-  }
+}
 
 input[type="file"]::file-selector-button:hover {
     background-color: var(--color-4);
 }
 
 input[type='text'] {
-    padding: 0.5rem;
-    border-radius: 0.2rem;
+    padding: 0.8rem;
+    border-radius: 0.4rem;
 }
 
 .search .form-group {
@@ -1065,6 +1071,7 @@ select {
 .my-1 {
     margin: 1rem 0;
 }
+
 .choose-the-file {
     display: inline-block;
     margin: 1rem 0;
@@ -1081,6 +1088,7 @@ select {
     align-items: center;
     margin-bottom: 2rem;
 }
+
 .page-header h1 {
     margin: 0;
 }
@@ -1101,42 +1109,47 @@ td .fa-circle-check {
     height: 100%;
     overflow: auto;
     background-color: rgba(0, 0, 0, 0.8);
-    
-  }
-  
-  .modal-content {
+
+}
+
+.modal-content {
     background-color: var(--white);
     margin: 15% auto;
     padding: 20px;
     border: 1px solid var(--grey);
-  }
-  
-  .close {
+}
+
+.close {
     color: var(--grey);
     float: right;
     font-size: 28px;
     font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
+}
+
+.close:hover,
+.close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
-  }
+}
 
 
-  i.help {
+i.help {
     font-size: 0.7rem;
     color: var(--grey);
-  }
+}
 
-  .red {
+.red {
     background-color: #640c1f;
     padding: 1rem;
-  }
-  .green {
+}
+
+.green {
     background-color: #08220e;
     padding: 1rem;
 
-  }
+}
+
+.btns {
+    margin-bottom: 2rem;
+}
