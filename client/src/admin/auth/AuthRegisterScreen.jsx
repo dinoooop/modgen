@@ -5,7 +5,7 @@ import BlankLayout from '../layouts/BlankLayout'
 import Validator from '../../helpers/Validator'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { register, reset } from './authSlice'
-import { validateRegisterForm } from './authValidation'
+import { validateForm } from './authValidation'
 
 export default function () {
 
@@ -17,31 +17,32 @@ export default function () {
         name: "John", email: "john@mail.com", password: "welcome", password_confirmation: "welcome"
     })
     const [errors, setErrors] = useState({})
-    const { user: authUser, error } = useSelector(state => state.auth)
+    const { user, error, loading } = useSelector(state => state.auth)
 
     useEffect(() => {
         dispatch(reset())
-        if (authUser) {
+        if (user) {
             navigate('/admin/modules')
         }
-    }, [authUser])
+    }, [dispatch, user])
 
     const onChangeForm = (e) => {
-        const validated = validator.validate(e, validateRegisterForm, formValues)
+        const validated = validator.validate(e, validateForm, formValues)
         setFormValues(prev => ({ ...prev, ...validated.formValues }))
         setErrors(prev => ({ ...prev, ...validated.error }))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const newFormData = validator.submit(formValues, validateRegisterForm)
+        const newFormData = validator.submit(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)
         } else {
             try {
                 const resultAction = await dispatch(register(newFormData))
                 unwrapResult(resultAction)
-                navigate('/admin/modules')
+                const { user } = resultAction.payload
+                navigate('/verify/' + user.process_link)
             } catch (error) {
                 console.error(error)
             }
@@ -105,7 +106,12 @@ export default function () {
                         />
                         <div className="color-red">{errors.password_confirmation}</div>
                     </div>
-                    <button type='submit' className="btn submit">SIGN UP</button>
+                    
+                    {
+                        loading 
+                        ? <div className='loader'></div> 
+                        : <button className="btnmid">SIGN UP</button>
+                    }
                 </form>
             </div>
         </BlankLayout>

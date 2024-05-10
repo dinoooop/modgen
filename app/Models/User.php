@@ -23,6 +23,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'process_link',
+        'verification_code',
+        'is_verified',
     ];
 
     /**
@@ -68,7 +71,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Module::class);
     }
-    
+
     public function hasAnyRole($roles)
     {
         if (is_array($roles)) {

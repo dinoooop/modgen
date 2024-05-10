@@ -8,7 +8,7 @@
     --white: #edf1ff;
     --black: #444444;
     --grey: #ccc;
-    --vibrant: #0ff;
+    --vibrant: #00ffff;
     --danger: #761d30;
     --danger-color: #d44161;
     --success: #00ed33;
@@ -701,7 +701,13 @@ ul.pagination {
     display: flex;
     justify-content: center;
     align-items: center;
-    min-width: 100vw;
+    flex-direction: column;
+}
+
+.midbox .btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
 }
 
 
@@ -1152,4 +1158,66 @@ i.help {
 
 .btns {
     margin-bottom: 2rem;
+}
+
+.btnmid {
+    background-color: var(--color-3);
+    color: var(--color-4);
+    padding: 0.5rem 1.5rem;
+    border-radius: 0.2rem;
+    cursor: pointer;
+    transition: all 200ms ease;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.btnmid:hover {
+    background-color: var(--vibrant);
+    color: var(--black);
+}
+
+.btnreg {
+    color: var(--vibrant);
+    text-decoration: underline;   
+    cursor: pointer;
+}
+
+/* Loader animation */
+.loader {
+    margin: 0 auto ;
+    width: 45px;
+    aspect-ratio: .75;
+    --c: no-repeat linear-gradient(var(--vibrant) 0 0);
+    background:
+        var(--c) 0% 50%,
+        var(--c) 50% 50%,
+        var(--c) 100% 50%;
+    animation: l7 1s infinite linear alternate;
+}
+
+@keyframes l7 {
+    0% {
+        background-size: 20% 50%, 20% 50%, 20% 50%
+    }
+
+    20% {
+        background-size: 20% 20%, 20% 50%, 20% 50%
+    }
+
+    40% {
+        background-size: 20% 100%, 20% 20%, 20% 50%
+    }
+
+    60% {
+        background-size: 20% 50%, 20% 100%, 20% 20%
+    }
+
+    80% {
+        background-size: 20% 50%, 20% 50%, 20% 100%
+    }
+
+    100% {
+        background-size: 20% 50%, 20% 50%, 20% 50%
+    }
 }

@@ -12,6 +12,17 @@
 - Make login, register form same
 - mike profile page - this action is unautherised
 - empty security validation
-move user profile to auth profile
-email validation
-Home page design
+- move user profile to auth profile
+- account verification
+- send email
+- Loader for login, registration
+- resend
+- reset password
+- unique validation rule for auth
+- implement verification link
+
+remove verification code 
+fix profile save error
+change reset_link to process_link
+Home page design 
+fix - Unexpected default export of anonymous function

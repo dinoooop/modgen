@@ -211,5 +211,25 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
+    
+    /*
+    |
+    |
+    | Custom configuration for the app
+    | Disable this for stop sending emails 
+    |
+     */
+
+     'mail_send' => env('APP_MAIL_SEND'),
+
+     /*
+     |
+     |
+     | Demo mode help to enable the text/features 
+     | that should only available for presentaion
+     |
+      */
+ 
+     'demo_mode' => env('APP_DEMO_MODE'),
 
 ];

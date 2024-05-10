@@ -17,18 +17,25 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/auth/login', [AuthController::class, 'login']);
+Route::post('/auth/register', [AuthController::class, 'register']);
+Route::post('/auth/forgot-password', [AuthController::class, 'forgotPassword']);
+Route::post('/auth/reset-password', [AuthController::class, 'resetPassword']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/check', [AuthController::class, 'check']);
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('/auth/security', [AuthController::class, 'security']);
+    Route::post('/auth/verify', [AuthController::class, 'verify']);
+    Route::get('/auth/check', [AuthController::class, 'check']);
+    Route::get('/auth/resend-verification-code', [AuthController::class, 'resendVerificationCode']);
+    Route::get('/auth', [AuthController::class, 'show']);
+    Route::post('/auth', [AuthController::class, 'update']);
 
     Route::resource('users', UserController::class);
-    
+
     Route::post('/modules/{id}', [ModuleController::class, 'update']);
     Route::post('/generate/{id}', [ModuleController::class, 'generate']);
     Route::resource('modules', ModuleController::class);
-    
+
     Route::post('/general/flush', [GeneralController::class, 'flush']);
 });

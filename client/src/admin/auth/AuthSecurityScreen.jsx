@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { show, update } from './userSlice'
-import { validateSecurityForm } from './userValidation'
+import { Link } from 'react-router-dom'
 import Validator from '../../helpers/Validator'
 import ProtectedLayout from '../layouts/ProtectedLayout'
+import { reset, security } from './authSlice'
+import { validateForm } from './authValidation'
 
 export default function () {
 
@@ -12,31 +12,28 @@ export default function () {
     const validator = new Validator()
 
     const fields = { old_password: '', password: '', password_confirmation: '' }
-    const authUser = useSelector(state => state.auth.user)
-    const { success, error } = useSelector(state => state.user)
+    const { success, error } = useSelector(state => state.auth)
     const [formValues, setFormValues] = useState(fields)
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
-        dispatch(show(authUser.id));
-    }, [dispatch, authUser]);
+        dispatch(reset())
+    }, [dispatch]);
 
     const onChangeForm = (e) => {
-        const validated = validator.validate(e, validateSecurityForm, formValues)
+        const validated = validator.validate(e, validateForm, formValues)
         setFormValues(prev => ({ ...prev, ...validated.formValues }))
         setErrors(prev => ({ ...prev, ...validated.error }))
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const newFormData = validator.submit(formValues, validateSecurityForm)
+        const newFormData = validator.submit(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)
         } else {
-            newFormData.security = true
-            newFormData.id = authUser.id
             setFormValues(fields)
-            dispatch(update(newFormData))
+            dispatch(security(newFormData))
         }
     }
 

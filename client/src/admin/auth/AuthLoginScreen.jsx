@@ -5,7 +5,7 @@ import BlankLayout from '../layouts/BlankLayout'
 import Validator from '../../helpers/Validator'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { login, reset } from './authSlice'
-import { validateLoginForm } from './authValidation'
+import { validateForm } from './authValidation'
 
 export default function () {
 
@@ -15,24 +15,24 @@ export default function () {
 
     const [formValues, setFormValues] = useState({ email: "admin@mail.com", password: "welcome" })
     const [errors, setErrors] = useState({})
-    const { user: authUser, error } = useSelector(state => state.auth)
+    const { user, error, loading } = useSelector(state => state.auth)
 
     useEffect(() => {
         dispatch(reset())
-        if (authUser) {
+        if (user) {
             navigate('/admin/modules')
         }
-    }, [authUser])
+    }, [dispatch, user])
 
     const onChangeForm = (e) => {
-        const validated = validator.validate(e, validateLoginForm, formValues)
+        const validated = validator.validate(e, validateForm, formValues)
         setFormValues(prev => ({ ...prev, ...validated.formValues }))
         setErrors(prev => ({ ...prev, ...validated.error }))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const newFormData = validator.submit(formValues, validateLoginForm)
+        const newFormData = validator.submit(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)
         } else {
@@ -49,7 +49,7 @@ export default function () {
     return (
         <BlankLayout>
 
-            <div className='cardbody col-md-4 col-sm-8'>
+            <div className='cardbody col-md-4 col-sm-8 '>
                 <h1>Login</h1>
                 <p className="my-1">Don't have an account? <Link to="/register">Sign Up</Link></p>
 
@@ -82,7 +82,17 @@ export default function () {
                         />
                         <div className="color-red">{errors.password}</div>
                     </div>
-                    <button type='submit' className="btn submit">SIGN IN</button>
+
+                    {
+                        error &&
+                        <p className='my-1'><Link to='/forgot-password'>Forgot password?</Link></p>
+                    }
+
+
+                    {
+                        loading ? <div className='loader'></div> : <button className="btnmid">SIGN IN</button>
+                    }
+
                 </form>
             </div>
 

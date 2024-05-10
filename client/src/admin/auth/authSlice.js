@@ -10,17 +10,26 @@ const initialState = {
     user: authUserFromStorage,
     token: tokenFromStorage,
     theme: themeFromStorage,
+    loading: false,
     error: '',
-    loading: false
+    success: ''
 };
 
 export const check = createAsyncThunk('auth/check', async (data = {}) => {
     try {
-        const response = await axios.get(`${config.api}/check`, {
+        const response = await axios.get(`${config.api}/auth/check`, {
             params: data,
             headers: config.header().headers,
         });
-        return response.data;
+        const user = response.data?.user
+        if (user.is_verified) {
+            return response.data;
+        } else {
+            const currentURL = window.location.href;
+            if (currentURL.indexOf("/verify/") === -1) {
+                window.location.href = '/verify/' + user.process_link
+            }
+        }
     } catch (error) {
         if (error.response && error.response.status === 401) {
             localStorage.removeItem('authUser')
@@ -30,18 +39,9 @@ export const check = createAsyncThunk('auth/check', async (data = {}) => {
     }
 });
 
-export const register = createAsyncThunk('auth/register', async (data) => {
-    try {
-        const response = await axios.post(`${config.api}/register`, data);
-        return response.data;
-    } catch (error) {
-        throw error.response.data.message
-    }
-});
-
 export const login = createAsyncThunk('auth/login', async (data) => {
     try {
-        const response = await axios.post(`${config.api}/login`, data);
+        const response = await axios.post(`${config.api}/auth/login`, data);
         return response.data;
     } catch (error) {
         // throw new Error(error.response.data.message);
@@ -50,15 +50,86 @@ export const login = createAsyncThunk('auth/login', async (data) => {
     }
 });
 
-
-export const logout = createAsyncThunk('auth/logout', async () => {
+export const verify = createAsyncThunk('auth/verify', async (data) => {
     try {
-        const response = await axios.post(`${config.api}/logout`, null, config.header());
+        const response = await axios.post(`${config.api}/auth/verify`, data, config.formdataheader());
         return response.data;
     } catch (error) {
         throw error.response.data.message
     }
 });
+
+
+export const logout = createAsyncThunk('auth/logout', async () => {
+    try {
+        const response = await axios.post(`${config.api}/auth/logout`, null, config.header());
+        return response.data;
+    } catch (error) {
+        throw error.response.data.message
+    }
+});
+
+export const register = createAsyncThunk('auth/register', async (data) => {
+    try {
+        const response = await axios.post(`${config.api}/auth/register`, data);
+        return response.data;
+    } catch (error) {
+        throw error.response.data.message
+    }
+});
+
+export const show = createAsyncThunk('auth/show', async () => {
+    try {
+        const response = await axios.get(`${config.api}/auth`, config.header())
+        return response.data
+    } catch (error) {
+        throw error.response.data.message
+    }
+})
+
+export const update = createAsyncThunk('auth/update', async (data) => {
+    try {
+        const response = await axios.post(`${config.api}/auth`, data, config.header())
+        return response.data
+    } catch (error) {
+        throw error.response.data.message
+    }
+})
+
+export const security = createAsyncThunk('auth/security', async (data) => {
+    try {
+        const response = await axios.post(`${config.api}/auth/security`, data, config.header())
+        return response.data
+    } catch (error) {
+        throw error.response.data.message
+    }
+})
+
+export const resendVerificationCode = createAsyncThunk('auth/resend-verification-code', async () => {
+    try {
+        const response = await axios.get(`${config.api}/auth/resend-verification-code`, config.header())
+        return response.data
+    } catch (error) {
+        throw error.response.data.message
+    }
+})
+export const forgotPassword = createAsyncThunk('auth/forgot-password', async (data) => {
+    try {
+        const response = await axios.post(`${config.api}/auth/forgot-password`, data)
+        return response.data
+    } catch (error) {
+        throw error.response.data.message
+    }
+})
+
+export const resetPassword = createAsyncThunk('auth/reset-password', async (data) => {
+    try {
+        const response = await axios.post(`${config.api}/auth/reset-password`, data)
+        return response.data
+    } catch (error) {
+        throw error.response.data.message
+    }
+})
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -70,7 +141,7 @@ export const authSlice = createSlice({
         },
         reset: (state, action) => {
             state.error = ''
-            state.loading = false
+            state.success = ''
         },
     },
     extraReducers: (builder) => {
@@ -82,7 +153,6 @@ export const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.user = action.payload.user
                 state.loading = false
-                state.error = ''
                 localStorage.setItem('authUser', JSON.stringify(action.payload.user))
                 localStorage.setItem('token', action.payload.token)
             })
@@ -117,6 +187,93 @@ export const authSlice = createSlice({
             .addCase(register.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message;
+            })
+            // Show
+            .addCase(show.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(show.fulfilled, (state, action) => {
+                state.user = action.payload;
+                state.loading = false;
+            })
+            .addCase(show.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message;
+            })
+            // Update
+            .addCase(update.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(update.fulfilled, (state, action) => {
+                state.loading = false
+                state.error = ''
+                state.success = action.payload.message ?? ''
+            })
+            .addCase(update.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
+            // security
+            .addCase(security.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(security.fulfilled, (state, action) => {
+                state.loading = false
+                state.error = ''
+                state.success = action.payload.message ?? ''
+            })
+            .addCase(security.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
+            // verify
+            .addCase(verify.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(verify.fulfilled, (state, action) => {
+                state.loading = false
+                state.error = ''
+                localStorage.setItem('authUser', JSON.stringify(action.payload.user))
+            })
+            .addCase(verify.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
+            // Resend verfification mail
+            .addCase(resendVerificationCode.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(resendVerificationCode.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = action.payload.message
+            })
+            .addCase(resendVerificationCode.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
+            // Forgot password
+            .addCase(forgotPassword.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(forgotPassword.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = action.payload.message
+            })
+            .addCase(forgotPassword.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
+            })
+            // Reset password
+            .addCase(resetPassword.pending, (state) => {
+                state.loading = true
+            })
+            .addCase(resetPassword.fulfilled, (state, action) => {
+                state.loading = false
+                state.success = true
+            })
+            .addCase(resetPassword.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message
             })
     },
 })

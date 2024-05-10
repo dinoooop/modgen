@@ -52,31 +52,15 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
 
-        if ($request->filled("security")) {
-
-            // $this->authorize('security', $user);
-
-            $validated = $request->validate([
-                'old_password' => 'required',
-                'password' => 'required|confirmed'
-            ]);
-
-            if (!Hash::check($validated['old_password'], $user->password)) {
-                return response()->json(['message' => 'Incorrect password'], 422);
-            }
-
-            $user = $user->update([
-                'password' => Hash::make($validated['password']),
-            ]);
-            return response()->json(['message' => 'Password updated successfully']);
-        }
-
         $this->authorize('update', $user);
 
         $validated = $request->validate([
             'name' => 'sometimes|required|string',
             'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
-            'password' => 'sometimes|required'
+            'password' => 'sometimes|required',
+            'process_link' => 'sometimes',
+            'verification_code' => 'sometimes',
+            'is_verified' => 'sometimes',
         ]);
 
         if ($request->filled('password')) {

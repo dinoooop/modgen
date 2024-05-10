@@ -1,35 +1,28 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { show, update } from './userSlice'
-import { validateForm } from './userValidation'
+import { Link } from 'react-router-dom'
 import Validator from '../../helpers/Validator'
 import ProtectedLayout from '../layouts/ProtectedLayout'
+import { reset, show, update } from './authSlice'
+import { validateForm } from './authValidation'
 
 export default function () {
 
     const dispatch = useDispatch()
-    const navigate = useNavigate()
     const validator = new Validator()
-    const authUser = useSelector(state => state.auth.user)
-
-    const { item, error, success } = useSelector(state => state.user)
-    const [formValues, setFormValues] = useState(item || {})
+    const { user, error, success } = useSelector(state => state.auth)
+    const [formValues, setFormValues] = useState(user)
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
-        dispatch(show(authUser.id));
-    }, [dispatch, authUser]);
-
-    useEffect(() => {
-        if (item) {
-            setFormValues(item);
-        }
-    }, [item]);
+        dispatch(reset())
+        dispatch(show())
+    }, [dispatch]);
 
     const onChangeForm = (e) => {
-        setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))
-        setErrors(prev => ({ ...prev, ...validator.validate(e, validateForm).error }))
+        const validated = validator.validate(e, validateForm, formValues)
+        setFormValues(prev => ({ ...prev, ...validated.formValues }))
+        setErrors(prev => ({ ...prev, ...validated.error }))
     }
 
     const handleSubmit = (e) => {

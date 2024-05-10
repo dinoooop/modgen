@@ -35,3 +35,15 @@ pages
 App.js
 config.js
 store.js
+
+
+Register
+    fill data 
+    submit
+
+    redirect to verify 
+
+Admin Page auth process
+    check user is_verified = 1
+    false redirect to verifiation page 
+

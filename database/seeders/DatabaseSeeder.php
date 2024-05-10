@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
@@ -28,6 +29,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@mail.com',
             'password' => Hash::make('welcome'),
+            'is_verified' => true,
         ]);
 
         $user->roles()->attach(1);
@@ -36,9 +38,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Mike',
             'email' => 'mike@mail.com',
             'password' => Hash::make('welcome'),
+            'process_link' => Str::random(),
+            'verification_code' => rand(1000, 9999),
+            'is_verified' => false,
         ]);
 
         $user->roles()->attach(2);
-        
+
     }
 }
