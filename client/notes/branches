@@ -1,49 +1,6 @@
 master
  |_ task1001 : modify project to module
+ |_ task1002 : create role field from server
 
 
-assets
-    components
-    layouts
-
-bootstrap
-    components
-        SideNav.js
-        ProfilePic.js
-        NotFound.js
-    layouts
-        BlankLayout.js
-        DashBoardLayout.js
-        ProtectedLayout.js
-    helpers
-        basic.js
-        validator.js
-    styles
-        admin.css
-        front.css
-        grid.css
-dashboard    
-    module
-        ModuleCreateScreen.js
-        ModuleEditScreen.js
-    user
-    general
-    auth
-pages
-    home
-
-App.js
-config.js
-store.js
-
-
-Register
-    fill data 
-    submit
-
-    redirect to verify 
-
-Admin Page auth process
-    check user is_verified = 1
-    false redirect to verifiation page 
 
