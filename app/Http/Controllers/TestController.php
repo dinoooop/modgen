@@ -18,13 +18,7 @@ class TestController extends Controller
     public function test()
     {
 
-        $user = User::find(2);
-        $user->verification_code = "255";
-        // $mailable = new VerifyMail($user);
-        // $html = $mailable->render();
-
-        // echo $html;
-        Mail::to("dinoop.k@bizfab.com")->send(new VerifyMail($user));
+        print_r(role('subscriber'));
 
     }
 }

@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux"
 import BlankLayout from '../layouts/BlankLayout'
 import Validator from '../../helpers/Validator'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { check, forgotPassword, login, resendVerificationCode, reset, resetPassword, verify } from './authSlice'
+import { check, forgotPassword, login, resendVerify, reset, resetPassword, verify } from './authSlice'
 import { validateForm } from './authValidation'
+import NoAuthLayout from '../layouts/NoAuthLayout'
 
 export default function () {
 
@@ -17,13 +18,6 @@ export default function () {
     const { user, error, success, loading } = useSelector(state => state.auth)
     const [formValues, setFormValues] = useState({ email: "admin@mail.com", password: "welcome" })
     const [errors, setErrors] = useState({})
-
-    useEffect(() => {
-        dispatch(reset())
-        if (user) {
-            navigate('/admin/modules')
-        }
-    }, [dispatch, user])
 
     const onChangeForm = (e) => {
         const validated = validator.validate(e, validateForm, formValues)
@@ -39,7 +33,7 @@ export default function () {
             setErrors(newFormData.errors)
         } else {
             try {
-                newFormData.reset_link = params.reset_link
+                newFormData.process_link = params.process_link
                 const resultAction = await dispatch(resetPassword(newFormData))
                 unwrapResult(resultAction)
             } catch (error) {
@@ -49,12 +43,7 @@ export default function () {
     }
 
     return (
-        <BlankLayout>
-
-
-
-
-
+        <NoAuthLayout>
 
             {
                 success
@@ -116,8 +105,6 @@ export default function () {
                     </div>
             }
 
-
-
-        </BlankLayout>
+        </NoAuthLayout>
     )
 }

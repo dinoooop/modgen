@@ -10,30 +10,30 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-    public function index(User $user)
+    public function index(User $authUser)
     {
-        return $user->hasAnyRole(['admin']);
+        return $authUser->hasAnyRole(['admin']);
     }
 
     public function show(User $authUser, $user)
     {
         // Log::info("auth user: {$authUser->id} and current user : {$user->id}");
-        return $user->hasAnyRole(['admin']) || $authUser->id == $user->id;
+        return $authUser->hasAnyRole(['admin']) || $authUser->id == $user->id;
     }
 
-    public function store(User $user)
+    public function store(User $authUser)
     {
-        return $user->hasAnyRole(['admin']);
+        return $authUser->hasAnyRole(['admin']);
     }
 
     public function update(User $authUser, $user)
     {
-        return $user->hasAnyRole(['admin']) || $authUser->id == $user->id;
+        return $authUser->hasAnyRole(['admin']) || $authUser->id == $user->id;
     }
 
-    public function destroy(User $user)
+    public function destroy(User $authUser)
     {
-        return $user->hasAnyRole(['admin']);
+        return $authUser->hasAnyRole(['admin']);
     }
 
 }

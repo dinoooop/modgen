@@ -27,6 +27,8 @@ export default function () {
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log(formValues);
+
         const newFormData = validator.submit(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)

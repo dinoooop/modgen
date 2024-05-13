@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux"
 import BlankLayout from '../layouts/BlankLayout'
 import Validator from '../../helpers/Validator'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { check, forgotPassword, login, resendVerificationCode, reset, verify } from './authSlice'
+import { check, forgotPassword, login, resendVerify, reset, verify } from './authSlice'
 import { validateForm } from './authValidation'
+import NoAuthLayout from '../layouts/NoAuthLayout'
 
 export default function () {
 
@@ -18,12 +19,7 @@ export default function () {
     const [errors, setErrors] = useState({})
     const { user, error, success, loading } = useSelector(state => state.auth)
 
-    useEffect(() => {
-        dispatch(reset())
-        if (user) {
-            navigate('/admin/modules')
-        }
-    }, [dispatch, user])
+    
 
     const onChangeForm = (e) => {
         const validated = validator.validate(e, validateForm, formValues)
@@ -50,7 +46,7 @@ export default function () {
 
 
     return (
-        <BlankLayout>
+        <NoAuthLayout>
 
             <div className='cardbody col-md-4 col-sm-8'>
                 <h1>Forgot Password</h1>
@@ -87,6 +83,6 @@ export default function () {
                 </form>
             </div>
 
-        </BlankLayout>
+        </NoAuthLayout>
     )
 }

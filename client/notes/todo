@@ -21,8 +21,14 @@
 - unique validation rule for auth
 - implement verification link
 
-remove verification code 
-fix profile save error
-change reset_link to process_link
+- fix profile save error
+- remove verification code 
+- resend verification link
+- change reset_link to process_link
+- create NoAuthLayout
+add roles in create user form 
+add status in create user form 
+add Enum for status
 Home page design 
 fix - Unexpected default export of anonymous function
+forgot password

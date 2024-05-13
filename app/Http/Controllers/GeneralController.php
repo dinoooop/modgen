@@ -20,8 +20,26 @@ class GeneralController extends Controller
             return response()->json(['message' => "Flushed {$count} users"]);
         }
 
-        
+
         return response()->json(['message' => "No users to flush"], 422);
+
+
+
+    }
+
+    public function stock()
+    {
+        $data = [
+            'status' => status(),
+            'user_status' => status(null, 'user'),
+            'module_status' => status(null, 'module'),
+            'gender' => gender(),
+            'roles' => role(),
+            'weekdays' => weekday(),
+            'months' => month(),
+        ];
+
+        return response()->json($data);
 
     }
 }

@@ -15,6 +15,7 @@ const initialState = {
     success: ''
 };
 
+// When try to visit a protected page
 export const check = createAsyncThunk('auth/check', async (data = {}) => {
     try {
         const response = await axios.get(`${config.api}/auth/check`, {
@@ -22,10 +23,14 @@ export const check = createAsyncThunk('auth/check', async (data = {}) => {
             headers: config.header().headers,
         });
         const user = response.data?.user
+        const currentURL = window.location.href;
         if (user.is_verified) {
+            if (currentURL.indexOf("/login") !== -1) {
+                window.location.href = '/admin/modules'
+            }
             return response.data;
         } else {
-            const currentURL = window.location.href;
+            // user is authenticated but not verified always redirect to verify page
             if (currentURL.indexOf("/verify/") === -1) {
                 window.location.href = '/verify/' + user.process_link
             }
@@ -39,6 +44,7 @@ export const check = createAsyncThunk('auth/check', async (data = {}) => {
     }
 });
 
+
 export const login = createAsyncThunk('auth/login', async (data) => {
     try {
         const response = await axios.post(`${config.api}/auth/login`, data);
@@ -50,14 +56,7 @@ export const login = createAsyncThunk('auth/login', async (data) => {
     }
 });
 
-export const verify = createAsyncThunk('auth/verify', async (data) => {
-    try {
-        const response = await axios.post(`${config.api}/auth/verify`, data, config.formdataheader());
-        return response.data;
-    } catch (error) {
-        throw error.response.data.message
-    }
-});
+
 
 
 export const logout = createAsyncThunk('auth/logout', async () => {
@@ -105,9 +104,18 @@ export const security = createAsyncThunk('auth/security', async (data) => {
     }
 })
 
-export const resendVerificationCode = createAsyncThunk('auth/resend-verification-code', async () => {
+export const verify = createAsyncThunk('auth/verify', async (data) => {
     try {
-        const response = await axios.get(`${config.api}/auth/resend-verification-code`, config.header())
+        const response = await axios.post(`${config.api}/auth/verify`, data, config.formdataheader());
+        return response.data;
+    } catch (error) {
+        throw error.response.data.message
+    }
+});
+
+export const resendVerify = createAsyncThunk('auth/resend-verify', async () => {
+    try {
+        const response = await axios.get(`${config.api}/auth/resend-verify`, config.header())
         return response.data
     } catch (error) {
         throw error.response.data.message
@@ -231,6 +239,8 @@ export const authSlice = createSlice({
                 state.loading = true
             })
             .addCase(verify.fulfilled, (state, action) => {
+                console.log("verify fullfilled");
+                console.log(action.payload);
                 state.loading = false
                 state.error = ''
                 localStorage.setItem('authUser', JSON.stringify(action.payload.user))
@@ -240,14 +250,14 @@ export const authSlice = createSlice({
                 state.error = action.error.message
             })
             // Resend verfification mail
-            .addCase(resendVerificationCode.pending, (state) => {
+            .addCase(resendVerify.pending, (state) => {
                 state.loading = true
             })
-            .addCase(resendVerificationCode.fulfilled, (state, action) => {
+            .addCase(resendVerify.fulfilled, (state, action) => {
                 state.loading = false
                 state.success = action.payload.message
             })
-            .addCase(resendVerificationCode.rejected, (state, action) => {
+            .addCase(resendVerify.rejected, (state, action) => {
                 state.loading = false
                 state.error = action.error.message
             })

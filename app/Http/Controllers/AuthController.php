@@ -74,25 +74,10 @@ class AuthController extends Controller
         }
 
         $user->save();
-        
-        $data['user'] = $user;
+
+        $data['user'] = User::where('email', $user->email)->with('roles')->first();
         $data['token'] = $user->createToken($user->name)->plainTextToken;
         return response()->json($data);
-    }
-
-    public function resendVerificationCode(Request $request)
-    {
-        try {
-            $user = Auth::user();
-            $user->verification_code = rand(1000, 9999);
-            $user->save();
-            if (config('app.mail_send')) {
-                Mail::to($user->email)->send(new VerifyMail($user));
-            }
-            return response()->json(['message' => "Please check your inbox"]);
-        } catch (Exception $e) {
-            return response()->json(['message' => "Failed to resend"], 422);
-        }
     }
 
     public function verify(Request $request)
@@ -107,7 +92,7 @@ class AuthController extends Controller
         if (isset($user->id)) {
             $user->is_verified = true;
             $user->save();
-            $response['message'] = 'Your email verification completed successfully';
+            $response['user'] = User::where('email', $user->email)->with('roles')->first();
             return response()->json($response);
         } else {
             $response['message'] = 'Verification failed';
@@ -115,9 +100,27 @@ class AuthController extends Controller
         }
     }
 
+    public function resendVerify(Request $request)
+    {
+        try {
+            if (config('app.mail_send')) {
+                $user = User::find(gcuid());
+                $user->process_link = Str::random();
+                $user->save();
+                Mail::to($user->email)->send(new VerifyMail($user));
+            }
+            $response['message'] = 'Email verification link successfully resent';
+            return response()->json($response);
+        } catch (\Throwable $th) {
+            $response['message'] = 'Failed to resend';
+            return response()->json($response, 422);
+        }
+
+    }
+
     public function check(Request $request)
     {
-        $data['user'] = Auth::user();
+        $data['user'] = Auth::user()->load('roles');
         return response()->json($data);
     }
 
@@ -205,9 +208,9 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (
-            isset($request->reset_link) &&
+            isset($request->process_link) &&
             isset($user->process_link) &&
-            $user->process_link == $request->reset_link
+            $user->process_link == $request->process_link
         ) {
             $user->process_link = null;
             $user->password = Hash::make($request->password);

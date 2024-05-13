@@ -1,4 +1,5 @@
 export const validateForm = (key, value, formData) => {
+    console.log(key, value);
     switch (key) {
         case 'name':
             return value.length === 0 ? 'Name is required' : false
@@ -19,9 +20,6 @@ export const validateForm = (key, value, formData) => {
 
         case 'old_password':
             return value.length === 0 ? 'Old Password is required' : false
-
-        case 'verification_code':
-            return value.length === 0 ? 'Verification code required' : false
             
         default:
             return false

@@ -30,7 +30,7 @@ export default function () {
                                 </>
                                 : <div className='cardbody col-md-4 col-sm-8'>
                                     <h1>Welcome</h1>
-                                    <p>Your email verified successfully. Now, you can now enjoy full access to the platform</p>
+                                    <p>Your email verified successfully. Now, you have the full access to the platform.</p>
                                     <Link to="/admin/modules"><button className='btn'>Explore</button></Link>
                                 </div>
                         }

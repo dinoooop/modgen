@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // Module::factory(10)->create();
-        Role::create(['name' => 'admin']);
-        Role::create(['name' => 'subscriber']);
+        Role::create(['name' => 'admin', 'key' => 'admin']);
+        Role::create(['name' => 'subscriber', 'key' => 'subscriber']);
 
         $user = User::create([
             'name' => 'Admin',
@@ -39,7 +39,6 @@ class DatabaseSeeder extends Seeder
             'email' => 'mike@mail.com',
             'password' => Hash::make('welcome'),
             'process_link' => Str::random(),
-            'verification_code' => rand(1000, 9999),
             'is_verified' => false,
         ]);
 

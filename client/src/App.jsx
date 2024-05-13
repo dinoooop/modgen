@@ -33,7 +33,7 @@ function App() {
           <Route path='/login' element={<AuthLoginScreen />} />
           <Route path='/register' element={<AuthRegisterScreen />} />
           <Route path="/forgot-password" element={<AuthForgotPasswordScreen />} />
-          <Route path="/reset-password/:reset_link" element={<AuthResetPasswordScreen />} />
+          <Route path="/reset-password/:process_link" element={<AuthResetPasswordScreen />} />
           <Route path="/welcome/:process_link" element={<AuthWelcomeScreen />} />
 
           <Route path='/admin/modules' element={<ModuleIndexScreen />} />

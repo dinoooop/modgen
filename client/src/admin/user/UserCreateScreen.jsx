@@ -76,6 +76,7 @@ export default function () {
                             />
                             <div className="color-red">{errors.email}</div>
                         </div>
+                        
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
                             <input type="password"

@@ -59,7 +59,6 @@ class UserController extends Controller
             'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
             'password' => 'sometimes|required',
             'process_link' => 'sometimes',
-            'verification_code' => 'sometimes',
             'is_verified' => 'sometimes',
         ]);
 
