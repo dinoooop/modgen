@@ -46,6 +46,7 @@ export default function () {
             <div className='cardbody col-md-4 col-sm-8 '>
                 <h1>Login</h1>
                 <p className="my-1">Don't have an account? <Link to="/register">Sign Up</Link></p>
+                <p className="my-1">Go to <Link to="/">Home</Link></p>
 
                 {
                     error &&

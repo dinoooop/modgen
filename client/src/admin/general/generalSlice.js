@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import config from '../../config';
 
-const stockFromStorage = localStorage.getItem('stock') ? localStorage.getItem('stock') : null
+const stockFromStorage = localStorage.getItem('stock') ? JSON.parse(localStorage.getItem('stock')) : null
 
 const initialState = {
     loading: false,
@@ -32,7 +32,12 @@ export const getStock = createAsyncThunk('general/stock', async () => {
 export const generalSlice = createSlice({
     name: 'general',
     initialState,
-    reducers: {},
+    reducers: {
+        reset: (state, action) => {
+            state.error = ''
+            state.success = ''
+        },
+    },
     extraReducers: (builder) => {
         builder
             // flush
@@ -41,7 +46,7 @@ export const generalSlice = createSlice({
             })
             .addCase(flush.fulfilled, (state, action) => {
                 state.loading = false;
-                state.message = action.payload.message;
+                state.success = action.payload.message;
             })
             .addCase(flush.rejected, (state, action) => {
                 state.loading = false
@@ -62,5 +67,7 @@ export const generalSlice = createSlice({
             })
     },
 })
+
+export const { reset } = generalSlice.actions
 
 export default generalSlice.reducer

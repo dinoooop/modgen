@@ -1,0 +1,51 @@
+/* medium screens (md) */
+@media (max-width: 992px) {
+    
+}
+
+/* small screens (sm) */
+@media (max-width: 768px) {
+    .front {
+        .bridge-image {
+            display: none;
+        }
+
+        h3 {
+            font-size: 3rem;
+            line-height: 3.5rem;
+            text-align: center;
+        }
+        p {
+            font-size: 1rem;
+            line-height: 1.5rem;
+            text-align: center;
+        }
+        h4 {
+            line-height: 3.5rem;
+            
+        }
+
+        .hero {
+            p {
+                margin-bottom: 2rem;
+            }
+    
+            .hero-heading {
+                font-size: 5rem;
+                line-height: 4.5rem;   
+                padding: 3rem 0 0.5rem;
+                text-align: center;
+            }
+            .hero-text {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    }
+}
+
+/* extra small screens (xs) */
+@media (max-width: 576px) {}
+
+

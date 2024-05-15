@@ -1,7 +1,8 @@
 import "./styles/grid.css";
-import "./styles/admin.css";
-import "./styles/front.css";
 import "./styles/responsive.css";
+import "./styles/admin.css";
+import "./styles/front.scss";
+import "./styles/front-responsive.scss";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import HomeScreen from "./front/pages/HomeScreen";
 import ModuleIndexScreen from "./admin/module/ModuleIndexScreen";

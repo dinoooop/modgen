@@ -1,6 +1,10 @@
+import {basic} from "./basic";
+
 export default class Validator {
 
 	validate(e, validateForm, formValues = null) {
+
+		
 
 		const { name, value, type, checked, files, options, multiple } = e.target;
 
@@ -29,15 +33,11 @@ export default class Validator {
 				}
 			}
 
+
 			const error = validateForm(name, value)
 			const newFormValues = { ...formValues }
 
-			if (checked) {
-				newFormValues[name] = [...(newFormValues[name] || []), value]
-			} else {
-				newFormValues[name] = (newFormValues[name] || []).filter((val) => val !== value)
-			}
-
+			newFormValues[name] = basic.toggleArrayItem(newFormValues[name], value);
 			return { formValues: newFormValues, error: { [name]: error } }
 
 		} else if (type === 'file') {
@@ -89,5 +89,7 @@ export default class Validator {
 
 		return { errors: updatedErrors }
 	}
+
+	
 
 }

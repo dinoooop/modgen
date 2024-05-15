@@ -49,6 +49,8 @@ export default function () {
 
                 <h1>Sign Up</h1>
                 <p className="my-1">Have an account? <Link to="/login">Log in now</Link></p>
+                <p className="my-1">Go to <Link to="/">Home</Link></p>
+
                 {
                     error &&
                     <p className='red-alert'>{error}</p>

@@ -121,7 +121,6 @@ export const userSlice = createSlice({
             // update
             .addCase(update.pending, (state) => {
                 state.loading = true
-                state.success = ''
             })
             .addCase(update.fulfilled, (state, action) => {
                 state.loading = false

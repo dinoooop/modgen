@@ -1,11 +1,13 @@
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { show, update } from './userSlice'
-import { validateForm } from './userValidation'
-import Validator from '../../helpers/Validator'
-import ProtectedLayout from '../layouts/ProtectedLayout'
-import { unwrapResult } from '@reduxjs/toolkit'
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { show, update } from './userSlice';
+import { validateForm } from './userValidation';
+import Validator from '../../helpers/Validator';
+import ProtectedLayout from '../layouts/ProtectedLayout';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { basic } from '../../helpers/basic';
+import { sv } from '../../helpers/sv';
 
 export default function () {
 
@@ -15,7 +17,8 @@ export default function () {
     const validator = new Validator()
 
     const { item, error } = useSelector(state => state.user)
-    const [formValues, setFormValues] = useState(item || {})
+    const { stock } = useSelector(state => state.general)
+    const [formValues, setFormValues] = useState({})
     const [errors, setErrors] = useState({})
 
     useEffect(() => {
@@ -23,7 +26,14 @@ export default function () {
     }, [dispatch, params.id])
 
     useEffect(() => {
-        setFormValues(item)
+        setFormValues({
+            id: item.id,
+            name: item.name,
+            email: item.email,
+            roles: basic.pluckIds(item.roles),
+            password: "",
+            status: item.status,
+        })
     }, [item])
 
     const onChangeForm = (e) => {
@@ -59,10 +69,7 @@ export default function () {
                 <div className='cardbody col-lg-6'>
                     <form onSubmit={handleSubmit}>
 
-                        {
-                            error &&
-                            <p className='red-alert'>{error}</p>
-                        }
+                        {error && <p className='red-alert'>{error}</p>}
 
                         <div className="form-group">
                             <label htmlFor="name">Name</label>
@@ -96,6 +103,39 @@ export default function () {
                                 onChange={onChangeForm}
                             />
                             <div className="color-red">{errors.password}</div>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="role">Role</label>
+                            {
+                                stock.roles?.map(role => (
+                                    <label className='checkbox-control' key={role.key}>
+                                        <input type="checkbox"
+                                            value={role.id}
+                                            name="roles"
+                                            onChange={onChangeForm}
+                                            checked={formValues.roles?.includes(role.id) || false}
+                                        /> {role.name}
+                                    </label>
+                                ))
+                            }
+                            <div className="color-red">{errors.role}</div>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="status">Status</label>
+                            {
+                                sv.status().map(mapitem => (
+                                    <label className='radio-control' key={mapitem.key}>
+                                        <input type="radio"
+                                            value={mapitem.id}
+                                            name="status"
+                                            onChange={onChangeForm}
+                                            checked={formValues.status == mapitem.id || ''}
+                                        /> {mapitem.name}
+                                    </label>
+                                ))
+                            }
+                            <div className="color-red">{errors.status}</div>
                         </div>
 
                         <button type='submit' className="btn submit">Submit</button>

@@ -32,6 +32,7 @@ class UserController extends Controller
     public function show(Request $request, User $user)
     {
         $this->authorize('show', $user);
+        $user->load('roles');
         return response()->json($user);
     }
 
@@ -43,10 +44,13 @@ class UserController extends Controller
             'name' => 'required|string',
             'email' => 'required|email|unique:users',
             'password' => 'required',
+            'roles' => 'required|array|min:1',
+            'status' => 'integer',
         ]);
 
-        $data = User::create($validated);
-        return response()->json($data);
+        $user = User::create($validated);
+        $user->roles()->attach($validated['roles']);
+        return response()->json($user);
     }
 
     public function update(Request $request, User $user)
@@ -57,16 +61,19 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'sometimes|required|string',
             'email' => 'sometimes|required|email|unique:users,email,' . $user->id,
-            'password' => 'sometimes|required',
-            'process_link' => 'sometimes',
-            'is_verified' => 'sometimes',
+            'password' => 'sometimes',
+            'roles' => 'sometimes|required|array|min:1',
+            'status' => 'integer',
         ]);
 
-        if ($request->filled('password')) {
+        if ($request->filled("password")) {
             $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']);
         }
 
         $user->update($validated);
+        $user->roles()->sync($validated['roles']);
         return response()->json(['message' => 'Data updated successfully']);
 
     }

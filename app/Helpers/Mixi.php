@@ -28,9 +28,9 @@ class Mixi
             default:
                 return [
                     1 => 'active',
-                    2 => 'inactive'
+                    2 => 'suspended'
                 ];
-                
+
         }
     }
 
@@ -57,7 +57,7 @@ class Mixi
         ];
     }
 
-   
+
 
     public static function month()
     {

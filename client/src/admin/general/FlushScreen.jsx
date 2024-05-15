@@ -1,20 +1,20 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import DashboardLayout from '../layouts/DashboardLayout'
-import { flush } from './generalSlice'
+import { flush, reset } from './generalSlice'
 
 export default function () {
     const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const serverError = useSelector(state => state.general.error)
-    const serverMessage = useSelector(state => state.general.message)
+    const { error, success } = useSelector(state => state.general)
 
+    useEffect(() => {
+        dispatch(reset())
+    }, [dispatch]);
 
     const handleSubmit = (e) => {
         e.preventDefault()
         dispatch(flush())
-        // navigate('/admin/posts')
     }
 
     return (
@@ -24,18 +24,14 @@ export default function () {
             </div>
             <div className="row">
                 <div className='cardbody col-lg-6'>
-                    {
-                        serverError &&
-                        <p className='red-alert'>{serverError}</p>
-                    }
-                    {
-                        serverMessage &&
-                        <p className='green-alert'>{serverMessage}</p>
-                    }
+
+                    {success && <p className='green-alert'>{success}</p>}
+                    {error && <p className='red-alert'>{error}</p>}
+
                     <form onSubmit={handleSubmit}>
                         <p>Delete other users and its files</p>
                         <button type='submit' className="btn submit">Flush</button>
-                        <Link to="/admin/posts" className="btn">Cancel</Link>
+                        <Link to="/admin/modules" className="btn">Cancel</Link>
                     </form>
                 </div>
             </div>

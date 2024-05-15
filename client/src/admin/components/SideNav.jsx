@@ -1,9 +1,9 @@
-import Basic from '../../helpers/Basic';
+
+import { basic } from '../../helpers/basic';
+
 import SideNavButton from './SideNavButton';
 
 export default function () {
-
-    const basic = new Basic()
 
     return (
         <div className="nav" >

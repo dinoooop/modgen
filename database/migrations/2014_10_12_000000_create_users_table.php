@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('password');
             $table->string('process_link')->nullable();
             $table->boolean('is_verified')->default(0);
+            $table->tinyInteger('status')->default(1);
             $table->rememberToken();
             $table->timestamps();
         });

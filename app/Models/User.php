@@ -25,6 +25,7 @@ class User extends Authenticatable
         'password',
         'process_link',
         'is_verified',
+        'status',
     ];
 
     /**

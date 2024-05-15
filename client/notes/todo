@@ -20,15 +20,13 @@
 - reset password
 - unique validation rule for auth
 - implement verification link
-
 - fix profile save error
 - remove verification code 
 - resend verification link
 - change reset_link to process_link
 - create NoAuthLayout
-add roles in create user form 
-add status in create user form 
-add Enum for status
+- add roles in create, edit user form 
+- add status in create edit user form 
+activate user from index page
 Home page design 
 fix - Unexpected default export of anonymous function
-forgot password

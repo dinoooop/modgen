@@ -1,11 +1,13 @@
-import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { validateForm } from './userValidation'
 import Validator from '../../helpers/Validator'
 import ProtectedLayout from '../layouts/ProtectedLayout'
 import { unwrapResult } from '@reduxjs/toolkit'
-import { store } from './userSlice'
+import { reset, store } from './userSlice'
+import { basic } from '../../helpers/basic'
+import { sv } from '../../helpers/sv'
 
 export default function () {
 
@@ -15,11 +17,15 @@ export default function () {
 
     const [errors, setErrors] = useState({})
     const [formValues, setFormValues] = useState({
-        title: "",
-        content: "",
-        yellow: "",
-        zip: "",
+        name: "test",
+        email: "test@mail.com",
+        roles: [sv.role("subscriber")],
+        password: "welcome",
+        status: sv.status("active"),
     })
+    const { error } = useSelector(state => state.user)
+
+    useEffect(() => { dispatch(reset()) }, [dispatch])
 
     const onChangeForm = (e) => {
         const validated = validator.validate(e, validateForm, formValues)
@@ -54,6 +60,8 @@ export default function () {
                 <div className='cardbody col-lg-6'>
                     <form onSubmit={handleSubmit}>
 
+                        {error && <p className='red-alert'>{error}</p>}
+
                         <div className="form-group">
                             <label htmlFor="name">Name</label>
                             <input type="text"
@@ -76,7 +84,7 @@ export default function () {
                             />
                             <div className="color-red">{errors.email}</div>
                         </div>
-                        
+
                         <div className="form-group">
                             <label htmlFor="password">Password</label>
                             <input type="password"
@@ -87,6 +95,40 @@ export default function () {
                                 onChange={onChangeForm}
                             />
                             <div className="color-red">{errors.password}</div>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="role">Role</label>
+                            {
+                                sv.role().map(role => (
+                                    <label className='checkbox-control' key={role.key}>
+                                        <input type="checkbox"
+                                            value={role.id}
+                                            name="roles"
+                                            onChange={onChangeForm}
+                                            checked={formValues.roles.includes(role.id)}
+                                        /> {role.name}
+                                    </label>
+                                ))
+                            }
+                            <div className="color-red">{errors.role}</div>
+                        </div>
+
+                        <div className="form-group">
+                            <label htmlFor="status">Status</label>
+                            {
+                                sv.status().map(mapitem => (
+                                    <label className='radio-control' key={mapitem.key}>
+                                        <input type="radio"
+                                            value={mapitem.id}
+                                            name="status"
+                                            onChange={onChangeForm}
+                                            checked={formValues.status == mapitem.id || ''}
+                                        /> {mapitem.name}
+                                    </label>
+                                ))
+                            }
+                            <div className="color-red">{errors.status}</div>
                         </div>
 
                         <button type='submit' className="btn submit">Submit</button>

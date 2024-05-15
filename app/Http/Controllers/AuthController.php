@@ -126,7 +126,7 @@ class AuthController extends Controller
 
     public function show(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::user()->load('roles');
         return response()->json($user);
     }
 
