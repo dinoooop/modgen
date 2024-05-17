@@ -216,6 +216,7 @@ export const authSlice = createSlice({
                 state.loading = false
                 state.error = ''
                 state.success = action.payload.message ?? ''
+                localStorage.setItem('authUser', JSON.stringify(action.payload.user))
             })
             .addCase(update.rejected, (state, action) => {
                 state.loading = false

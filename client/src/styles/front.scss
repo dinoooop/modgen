@@ -4,24 +4,23 @@
 
     p {
         font-size: 2rem;
-        line-height: 3rem;
         font-weight: normal;
     }
 
-    h3 {
-        font-size: 6rem;
-        line-height: 6.5rem;
-        font-weight: normal;
-    }
-
-    h4 {
-        font-weight: normal;
-        font-size: 4rem;
+    .sub-heading {
+        font-size: 8rem;
+        line-height: 7rem;
         margin-bottom: 3rem;
+    }
+    .footer-heading {
+        font-size: 4rem;
+        line-height: 4rem;
+        margin-bottom: 3rem;
+
     }
 
     .wrapper {
-        max-width: 1024px;
+        max-width: 1200px;
         margin: 0 auto;
         padding: 0 2rem;
     }
@@ -39,6 +38,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin-bottom: 5rem;
     }
 
     .logo {
@@ -62,12 +62,13 @@
             margin-bottom: 2rem;
         }
 
-        .hero-heading {
-            font-size: 10rem;
-            line-height: 8rem;
-            font-weight: lighter;
-            padding: 5rem 0 1rem;
-        }
+        
+    }
+
+    .hero-heading {
+        font-size: 10rem;
+        line-height: 8rem;
+        margin-bottom: 3rem;
     }
 
     .fbtn {
@@ -131,6 +132,7 @@
         /* allow text to wrap */
         word-wrap: break-word;
         /* allow long words to break */
+        font-weight: normal;
     }
 
 }

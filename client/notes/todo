@@ -27,6 +27,6 @@
 - create NoAuthLayout
 - add roles in create, edit user form 
 - add status in create edit user form 
-activate user from index page
-Home page design 
-fix - Unexpected default export of anonymous function
+- Home page design 
+- activate user from index page
+whenever update user update local storage

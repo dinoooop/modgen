@@ -1,11 +1,12 @@
 import { useDispatch, useSelector } from 'react-redux'
 import AppIcon from '../components/AppIcon'
-import { destroy, index, remove } from './userSlice'
+import { destroy, index, remove, update } from './userSlice'
 import { useEffect, useState } from 'react'
 import SortArrow from '../components/SortArrow'
 import Pagination from "react-js-pagination"
 import { Link } from 'react-router-dom'
 import ProtectedLayout from '../layouts/ProtectedLayout'
+import StatusIcon from '../components/StatusIcon'
 
 export default function () {
 
@@ -26,6 +27,11 @@ export default function () {
     const handleDelete = (user) => {
         dispatch(remove(user))
         dispatch(destroy(user))
+    }
+
+    const handleStatus = (id, status) => {
+        const data = { id, status }
+        dispatch(update(data))
     }
 
     const handleSearch = e => {
@@ -79,6 +85,7 @@ export default function () {
                                             <td className='action'>
                                                 <AppIcon onClick={handleDelete} item={item} icon="trash" />
                                                 <AppIcon to={`/admin/users/${item.id}`} icon="edit" />
+                                                <StatusIcon onClick={handleStatus} item={item} />
                                             </td>
                                         </tr>
                                     ))

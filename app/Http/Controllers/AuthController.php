@@ -87,7 +87,6 @@ class AuthController extends Controller
         ]);
 
         $user = User::where('process_link', $request->process_link)->first();
-        sleep(2);
 
         if (isset($user->id)) {
             $user->is_verified = true;
@@ -139,7 +138,10 @@ class AuthController extends Controller
         ]);
 
         $user->update($validated);
-        return response()->json(['message' => 'Data updated successfully']);
+
+        $response['user'] = Auth::user()->load('roles');
+        $response['message'] = 'Profile updated successfully';
+        return response()->json($response);
 
     }
 

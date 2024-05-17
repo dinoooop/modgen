@@ -73,7 +73,9 @@ class UserController extends Controller
         }
 
         $user->update($validated);
-        $user->roles()->sync($validated['roles']);
+        if ($request->filled("roles")) {
+            $user->roles()->sync($validated['roles']);
+        }
         return response()->json(['message' => 'Data updated successfully']);
 
     }
