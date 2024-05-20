@@ -1,5 +1,4 @@
-
-import { basic } from '../../helpers/Basic.js';
+import { bc } from '../../helpers/bc';
 
 import SideNavButton from './SideNavButton';
 
@@ -10,7 +9,7 @@ export default function () {
             <ul className="sidenav">
                 <SideNavButton title="Modules" icon="fa-solid fa-circle-check" href="/admin/modules" />
                 {
-                    basic.has("admin") &&
+                    bc.has("admin") &&
                     <>
                         <SideNavButton title="Flush" icon="fa-solid fa-bolt" href="/admin/flush" />
                         <SideNavButton title="Users" icon="fa-solid fa-user" href="/admin/users" />

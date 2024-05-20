@@ -1,6 +1,7 @@
 import store from '../store'
 
-export class basic {
+// Basic functions
+export class bc {
 
   static has(roles) {
     if (roles === 'all') { return true }

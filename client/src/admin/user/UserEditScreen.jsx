@@ -6,7 +6,7 @@ import { validateForm } from './userValidation';
 import Validator from '../../helpers/Validator';
 import ProtectedLayout from '../layouts/ProtectedLayout';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { basic } from '../../helpers/Basic';
+import { bc } from '../../helpers/bc';
 import { sv } from '../../helpers/sv';
 
 export default function () {
@@ -30,7 +30,7 @@ export default function () {
             id: item.id,
             name: item.name,
             email: item.email,
-            roles: basic.pluckIds(item.roles),
+            roles: bc.pluckIds(item.roles),
             password: "",
             status: item.status,
         })

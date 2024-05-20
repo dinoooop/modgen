@@ -1,5 +1,6 @@
-import {basic} from "./Basic";
+import { bc } from "./bc";
 
+// validator
 export default class Validator {
 
 	validate(e, validateForm, formValues = null) {
@@ -37,7 +38,7 @@ export default class Validator {
 			const error = validateForm(name, value)
 			const newFormValues = { ...formValues }
 
-			newFormValues[name] = basic.toggleArrayItem(newFormValues[name], value);
+			newFormValues[name] = bc.toggleArrayItem(newFormValues[name], value);
 			return { formValues: newFormValues, error: { [name]: error } }
 
 		} else if (type === 'file') {
