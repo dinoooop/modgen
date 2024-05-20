@@ -1,5 +1,5 @@
 
-import { basic } from '../../helpers/basic';
+import { basic } from '../../helpers/Basic.js';
 
 import SideNavButton from './SideNavButton';
 

@@ -6,7 +6,7 @@ import Validator from '../../helpers/Validator'
 import ProtectedLayout from '../layouts/ProtectedLayout'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { reset, store } from './userSlice'
-import { basic } from '../../helpers/basic'
+import { basic } from '../../helpers/Basic'
 import { sv } from '../../helpers/sv'
 
 export default function () {

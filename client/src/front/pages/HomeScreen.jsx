@@ -1,8 +1,12 @@
 import { Link } from "react-router-dom";
 import HomeLayout from "../layouts/HomeLayout";
+import { useSelector } from "react-redux";
+import { sv } from "../../helpers/sv";
 
 export default function () {
     const year = new Date().getFullYear()
+    const { user } = useSelector(state => state.auth)
+
     return (
         <HomeLayout>
             <section className="header">
@@ -11,7 +15,10 @@ export default function () {
                         <Link to="/">MODGEN</Link>
                     </div>
                     <ul className="nav">
-                        <li className="login"><Link className="fbtn-outline" to="/login">Sign In</Link></li>
+                        {user 
+                        ? <li className="dashboard"><Link className="fbtn-outline" to="/admin/modules">Modules</Link></li>
+                        :<li className="login"><Link className="fbtn-outline" to="/login">Sign In</Link></li>
+                    }
                     </ul>
                 </div>
                 <div className="hero wrapper">

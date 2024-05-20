@@ -4,7 +4,7 @@ import DashboardLayout from './DashboardLayout'
 import NotFoundScreen from '../general/NotFoundScreen'
 import { check } from '../../admin/auth/authSlice'
 import { useNavigate } from 'react-router-dom'
-import { basic } from '../../helpers/basic'
+import { basic } from '../../helpers/Basic'
 
 export default function ProtectedLayout({ roles, children, error = false }) {
 

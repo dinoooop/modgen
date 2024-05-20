@@ -6,7 +6,7 @@ import { validateForm } from './userValidation';
 import Validator from '../../helpers/Validator';
 import ProtectedLayout from '../layouts/ProtectedLayout';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { basic } from '../../helpers/basic';
+import { basic } from '../../helpers/Basic';
 import { sv } from '../../helpers/sv';
 
 export default function () {
