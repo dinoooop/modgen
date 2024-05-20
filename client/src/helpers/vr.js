@@ -1,9 +1,9 @@
 import { bc } from "./bc";
 
 // validator
-export default class Validator {
+export class vr {
 
-	validate(e, validateForm, formValues = null) {
+	static validate(e, validateForm, formValues = null) {
 
 		
 
@@ -57,7 +57,7 @@ export default class Validator {
 		}
 	}
 
-	submit(formValues, validateForm) {
+	static submit(formValues, validateForm) {
 		const updatedErrors = {}
 		Object.entries(formValues).forEach(([key, value]) => {
 			updatedErrors[key] = validateForm(key, value, formValues)
@@ -71,7 +71,7 @@ export default class Validator {
 		return { errors: updatedErrors }
 	}
 
-	submitFile(formValues, validateField) {
+	static submitFile(formValues, validateField) {
 
 		const updatedErrors = Object.fromEntries(
 			Object.entries(formValues).map(([key, value]) => [key, validateField(key, value)])

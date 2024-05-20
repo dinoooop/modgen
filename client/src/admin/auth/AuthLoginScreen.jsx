@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux"
 import BlankLayout from '../layouts/BlankLayout'
-import Validator from '../../helpers/Validator'
+import { vr } from '../../helpers/vr'
 import { unwrapResult } from '@reduxjs/toolkit'
 import { login, reset } from './authSlice'
 import { validateForm } from './authValidation'
@@ -12,21 +12,21 @@ export default function () {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const validator = new Validator()
+    
 
     const [formValues, setFormValues] = useState({ email: "admin@mail.com", password: "welcome" })
     const [errors, setErrors] = useState({})
     const { user, error, loading } = useSelector(state => state.auth)
 
     const onChangeForm = (e) => {
-        const validated = validator.validate(e, validateForm, formValues)
+        const validated = vr.validate(e, validateForm, formValues)
         setFormValues(prev => ({ ...prev, ...validated.formValues }))
         setErrors(prev => ({ ...prev, ...validated.error }))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const newFormData = validator.submit(formValues, validateForm)
+        const newFormData = vr.submit(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)
         } else {

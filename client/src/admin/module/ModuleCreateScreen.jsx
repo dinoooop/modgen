@@ -3,14 +3,14 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { store } from './moduleSlice'
 import { validateForm } from './moduleValidation'
-import Validator from '../../helpers/Validator'
+import { vr } from '../../helpers/vr'
 import ProtectedLayout from '../layouts/ProtectedLayout'
 
 export default function () {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const validator = new Validator()
+    
     const fileInputRef = useRef(null)
 
     const [errors, setErrors] = useState({})
@@ -22,13 +22,13 @@ export default function () {
     })
 
     const onChangeForm = (e) => {
-        setFormValues(prev => ({ ...prev, ...validator.validate(e, validateForm).formValues }))
-        setErrors(prev => ({ ...prev, ...validator.validate(e, validateForm).error }))
+        setFormValues(prev => ({ ...prev, ...vr.validate(e, validateForm).formValues }))
+        setErrors(prev => ({ ...prev, ...vr.validate(e, validateForm).error }))
     }
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        const newFormData = validator.submitFile(formValues, validateForm)
+        const newFormData = vr.submitFile(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)
         } else {

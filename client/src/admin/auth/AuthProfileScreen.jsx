@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
-import Validator from '../../helpers/Validator'
+import { vr } from '../../helpers/vr'
 import ProtectedLayout from '../layouts/ProtectedLayout'
 import { reset, show, update } from './authSlice'
 import { validateForm } from './authValidation'
@@ -9,7 +9,7 @@ import { validateForm } from './authValidation'
 export default function () {
 
     const dispatch = useDispatch()
-    const validator = new Validator()
+    
     const { user, error, success } = useSelector(state => state.auth)
     const [formValues, setFormValues] = useState(user)
     const [errors, setErrors] = useState({})
@@ -20,7 +20,7 @@ export default function () {
     }, [dispatch]);
 
     const onChangeForm = (e) => {
-        const validated = validator.validate(e, validateForm, formValues)
+        const validated = vr.validate(e, validateForm, formValues)
         setFormValues(prev => ({ ...prev, ...validated.formValues }))
         setErrors(prev => ({ ...prev, ...validated.error }))
     }
@@ -29,7 +29,7 @@ export default function () {
         e.preventDefault()
         console.log(formValues);
 
-        const newFormData = validator.submit(formValues, validateForm)
+        const newFormData = vr.submit(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)
         } else {

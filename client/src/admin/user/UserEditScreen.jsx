@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { show, update } from './userSlice';
 import { validateForm } from './userValidation';
-import Validator from '../../helpers/Validator';
+import { vr } from '../../helpers/vr';
 import ProtectedLayout from '../layouts/ProtectedLayout';
 import { unwrapResult } from '@reduxjs/toolkit';
 import { bc } from '../../helpers/bc';
@@ -14,7 +14,7 @@ export default function () {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const params = useParams()
-    const validator = new Validator()
+    
 
     const { item, error } = useSelector(state => state.user)
     const { stock } = useSelector(state => state.general)
@@ -37,14 +37,14 @@ export default function () {
     }, [item])
 
     const onChangeForm = (e) => {
-        const validated = validator.validate(e, validateForm, formValues)
+        const validated = vr.validate(e, validateForm, formValues)
         setFormValues(prev => ({ ...prev, ...validated.formValues }))
         setErrors(prev => ({ ...prev, ...validated.error }))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault()
-        const newFormData = validator.submit(formValues, validateForm)
+        const newFormData = vr.submit(formValues, validateForm)
         if (typeof newFormData.errors != 'undefined') {
             setErrors(newFormData.errors)
         } else {
