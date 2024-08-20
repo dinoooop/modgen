@@ -1,19 +1,14 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
 <head>
-    <meta charset="utf-8" />
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Web site created using create-react-app" />
-    <link rel="apple-touch-icon" href="/logo192.png" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="csrf-token" content="u0vSj3IT7FFcwarfRKb88rQBC7GV3hncGn2s0gDb">
+    <title>{{ config('app.name', 'Laravel') }}</title>
     <script src="https://kit.fontawesome.com/0d743a28c2.js" crossorigin="anonymous"></script>
-    <title>MODGEN</title>
-    <script defer="defer" src="{{url('build/static/js/main.js')}}"></script>
-    <link href="{{url('build/static/css/main.css')}}" rel="stylesheet">
+    @viteReactRefresh
+    @vite('resources/js/app.jsx')
 </head>
 
 <body><noscript>You need to enable JavaScript to run this app.</noscript>

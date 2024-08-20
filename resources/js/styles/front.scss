@@ -1,0 +1,143 @@
+.front {
+
+    overflow-x: hidden;
+
+    p {
+        font-size: 2rem;
+        font-weight: normal;
+    }
+
+    .sub-heading {
+        font-size: 8rem;
+        line-height: 7rem;
+        margin-bottom: 3rem;
+    }
+    .footer-heading {
+        font-size: 4rem;
+        line-height: 4rem;
+        margin-bottom: 3rem;
+
+    }
+
+    .wrapper {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 2rem;
+    }
+
+    section.header {
+        background: url("../../public/images/header.jpg");
+        padding-top: 4rem;
+        padding-bottom: 10rem;
+        background-repeat: no-repeat;
+        background-position: top;
+        background-size: cover;
+    }
+
+    .front-topnav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 5rem;
+    }
+
+    .logo {
+        font-size: 3rem;
+    }
+
+    section.part {
+        padding: 5rem 0;
+    }
+
+    section.part-3 {
+        background-color: #000;
+        text-align: center;
+        padding: 15rem 10rem 5rem 10rem;
+    }
+
+    .hero {
+
+        margin-top: 2rem;
+        p {
+            margin-bottom: 2rem;
+        }
+
+        
+    }
+
+    .hero-heading {
+        font-size: 10rem;
+        line-height: 8rem;
+        margin-bottom: 3rem;
+    }
+
+    .fbtn {
+        background-color: var(--color-3);
+        color: var(--color-4);
+        padding: 1rem;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        transition: all 200ms ease;
+        margin: 0;
+    }
+
+    .fbtn:hover {
+        background-color: var(--vibrant);
+        color: var(--black);
+    }
+
+    .fbtn-outline {
+        background-color: transparent;
+        color: var(--color-4);
+        padding: 0.5rem 0.8rem;
+        border-radius: 0.2rem;
+        cursor: pointer;
+        transition: all 200ms ease;
+        margin: 0;
+        border: 2px solid aqua;
+
+    }
+
+    .bridge {
+        display: flex;
+        flex-direction: row;
+        justify-content: start;
+        gap: 2rem;
+
+        .bridge-item {
+            flex-shrink: 1;
+        }
+    }
+
+    img.cog-wheels {
+        width: 1200px;
+    }
+
+    .copyright {
+        font-size: 1rem;
+        margin-top: 10rem;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        flex-shrink: 0;
+        /* prevent shrinking */
+        overflow: visible;
+        /* prevent clipping */
+        white-space: normal;
+        /* allow text to wrap */
+        word-wrap: break-word;
+        /* allow long words to break */
+        font-weight: normal;
+    }
+
+}
+
+
+
+
+

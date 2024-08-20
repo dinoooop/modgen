@@ -1,0 +1,75 @@
+/* medium screens (md) */
+@media (max-width: 992px) {
+    .front {
+        .hero-heading {
+            font-size: 8rem;
+            line-height: 7rem;
+        }
+
+        .sub-heading {
+            font-size: 6rem;
+            line-height: 6rem;
+        }
+        section.part-3 {
+            padding: 5rem 2rem 5rem 2rem;
+        }
+    }
+}
+
+/* small screens (sm) */
+@media (max-width: 768px) {
+    .front {
+        .bridge-image {
+            display: none;
+        }
+
+        h3 {
+            font-size: 3rem;
+            text-align: center;
+        }
+
+        p {
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .hero-heading {
+            font-size: 5rem;
+            line-height: 5rem;
+            text-align: center;
+        }
+
+        .hero-text {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .copyright {
+            font-size: 0.8rem;
+            margin-top: 10rem;
+        }
+    }
+}
+
+/* extra small screens (xs) */
+@media (max-width: 576px) {
+    .front{
+        .hero-heading {
+            font-size: 4rem;
+            line-height: 4rem;
+        }
+    
+        .sub-heading {
+            font-size: 2rem;
+            line-height: 2rem;
+        }
+
+        .footer-heading {
+            font-size: 2rem;
+            line-height: 2rem;
+            
+    
+        }
+    }
+}
